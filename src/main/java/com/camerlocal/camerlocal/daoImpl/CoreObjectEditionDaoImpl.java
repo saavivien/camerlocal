@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.CoreObjectEditionDao;
 import com.camerlocal.camerlocal.entities.CoreObjectEdition;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class CoreObjectEditionDaoImpl extends GenericDaoImpl<CoreObjectEdition, Long>
         implements CoreObjectEditionDao {
 

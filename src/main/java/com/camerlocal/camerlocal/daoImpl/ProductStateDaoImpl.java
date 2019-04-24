@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.ProductStateDao;
 import com.camerlocal.camerlocal.entities.ProductState;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class ProductStateDaoImpl extends GenericDaoImpl<ProductState, Long>
         implements ProductStateDao {
 

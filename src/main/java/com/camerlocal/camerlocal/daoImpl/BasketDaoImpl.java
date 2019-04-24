@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.BasketDao;
 import com.camerlocal.camerlocal.entities.Basket;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class BasketDaoImpl extends GenericDaoImpl<Basket, Long>
         implements BasketDao {
 

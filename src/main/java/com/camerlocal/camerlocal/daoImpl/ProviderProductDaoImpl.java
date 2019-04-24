@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.ProviderProductDao;
 import com.camerlocal.camerlocal.entities.ProviderProduct;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class ProviderProductDaoImpl extends GenericDaoImpl<ProviderProduct, Long>
         implements ProviderProductDao {
 

@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.MarkDao;
 import com.camerlocal.camerlocal.entities.Mark;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class MarkDaoImpl extends GenericDaoImpl<Mark, Long>
         implements MarkDao {
 

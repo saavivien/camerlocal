@@ -8,6 +8,8 @@ package com.camerlocal.camerlocal.serviceImpl;
 import com.camerlocal.camerlocal.dao.ImageDao;
 import com.camerlocal.camerlocal.entities.Image;
 import com.camerlocal.camerlocal.service.ImageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -15,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author vivien saa
  */
 @Transactional
+@Service
 public class ImageServiceImpl
         extends CoreObjectServiceImpl<Image, ImageDao>
         implements ImageService {
 
+    @Autowired
     public ImageServiceImpl(ImageDao imageDao) {
         super(imageDao);
     }

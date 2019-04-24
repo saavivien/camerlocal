@@ -8,6 +8,8 @@ package com.camerlocal.camerlocal.serviceImpl;
 import com.camerlocal.camerlocal.dao.AbundancePeriodDao;
 import com.camerlocal.camerlocal.entities.AbundancePeriod;
 import com.camerlocal.camerlocal.service.AbundancePeriodService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -15,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
  * @author vivien saa
  */
 @Transactional
+@Service
 public class AbundancePeriodServiceImpl extends GenericServiceImpl<AbundancePeriod, Long, AbundancePeriodDao>
         implements AbundancePeriodService {
 
+    @Autowired
     public AbundancePeriodServiceImpl(AbundancePeriodDao abundancePeriodDao) {
         super(abundancePeriodDao);
     }

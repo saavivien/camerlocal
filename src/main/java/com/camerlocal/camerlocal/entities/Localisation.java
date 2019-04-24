@@ -26,11 +26,11 @@ public class Localisation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_localisation")
     private Long idLocalisation;
+    
+    private String city;
 
     @OneToMany(mappedBy = "localisation", fetch = FetchType.LAZY)
     private List<Periods> listPeriods;
-
-    private String city;
 
     public Long getIdLocalisation() {
         return idLocalisation;

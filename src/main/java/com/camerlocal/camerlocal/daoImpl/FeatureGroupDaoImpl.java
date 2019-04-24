@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.FeatureGroupDao;
 import com.camerlocal.camerlocal.entities.FeatureGroup;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class FeatureGroupDaoImpl extends GenericDaoImpl<FeatureGroup, Long>
         implements FeatureGroupDao {
 

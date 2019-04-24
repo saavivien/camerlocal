@@ -10,12 +10,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author vivien saa
  */
 @Entity
+@Table(name = "user_table")
 public class User extends CoreObject {
 
     private String title;

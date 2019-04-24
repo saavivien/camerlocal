@@ -7,11 +7,13 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.AbundancePeriodDao;
 import com.camerlocal.camerlocal.entities.AbundancePeriod;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author vivien saa
  */
+@Repository
 public class AbundancePeriodDaoImp extends GenericDaoImpl<AbundancePeriod, Long>
         implements AbundancePeriodDao {
 
