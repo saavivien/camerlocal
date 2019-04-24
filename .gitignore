@@ -24,3 +24,11 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
+nbactions.xml
+HELP.md
+
+### maven ###
+mvn
+mvnw.cmd
+
+
