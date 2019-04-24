@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.camerlocal.camerlocal.dao;
+package com.camerlocal.camerlocal.service;
 
-import com.camerlocal.camerlocal.entities.CoreObject;
+import com.camerlocal.camerlocal.dao.BasketDao;
+import com.camerlocal.camerlocal.entities.Basket;
 
 /**
  *
  * @author vivien saa
- * @param <CO>
  */
-public interface CoreObjectDao<CO extends CoreObject> extends GenericDao<CO, Long> {
+public interface BasketService extends GenericService<Basket, Long, BasketDao> {
 
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.camerlocal.camerlocal.daoImpl;
+package com.camerlocal.camerlocal.service;
 
 import com.camerlocal.camerlocal.dao.CoreObjectDao;
 import com.camerlocal.camerlocal.entities.CoreObject;
@@ -12,8 +12,8 @@ import com.camerlocal.camerlocal.entities.CoreObject;
  *
  * @author vivien saa
  * @param <CO>
+ * @param <Dao>
  */
-public abstract class CoreObjectDaoImpl<CO extends CoreObject> extends GenericDaoImpl<CO, Long>
-        implements CoreObjectDao<CO> {
+public interface CoreObjectService<CO extends CoreObject, Dao extends CoreObjectDao<CO>> extends GenericService<CO, Long, Dao> {
 
 }
