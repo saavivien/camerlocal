@@ -30,6 +30,7 @@ HELP.md
 ### maven ###
 mvn
 mvnw.cmd
-/.mvn
+/.mvn/
+
 
 
