@@ -13,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -20,6 +22,8 @@ import javax.persistence.OneToMany;
  * @author vivien saa
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "role_find_role_by_role_name", query = "SELECT r FROM Role r WHERE r.roleName = :roleName")})
 public class Role implements Serializable {
 
     @Id
