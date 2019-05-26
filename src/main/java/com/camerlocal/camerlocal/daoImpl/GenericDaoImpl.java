@@ -6,7 +6,7 @@
 package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
-import com.camerlocal.camerlocal.serviceImpl.utils.CamerLocalDaoException;
+import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;

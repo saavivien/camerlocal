@@ -49,7 +49,6 @@ public class User extends CoreObject implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserRole> listUserRoles;
 
-    @JsonManagedReference
     @JsonIgnore
     @OneToMany(mappedBy = "userCreator", fetch = FetchType.LAZY)
     private List<CoreObject> listCoreObjectCreateds;

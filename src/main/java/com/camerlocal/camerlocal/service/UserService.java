@@ -7,7 +7,7 @@ package com.camerlocal.camerlocal.service;
 
 import com.camerlocal.camerlocal.dao.UserDao;
 import com.camerlocal.camerlocal.entities.User;
-import com.camerlocal.camerlocal.serviceImpl.utils.CamerLocalServiceException;
+import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 

@@ -11,7 +11,7 @@ import com.camerlocal.camerlocal.dao.UserRoleDao;
 import com.camerlocal.camerlocal.entities.User;
 import com.camerlocal.camerlocal.entities.UserRole;
 import com.camerlocal.camerlocal.service.UserService;
-import com.camerlocal.camerlocal.serviceImpl.utils.CamerLocalServiceException;
+import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;

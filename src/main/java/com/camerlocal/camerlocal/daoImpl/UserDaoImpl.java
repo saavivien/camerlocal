@@ -7,7 +7,7 @@ package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.UserDao;
 import com.camerlocal.camerlocal.entities.User;
-import com.camerlocal.camerlocal.serviceImpl.utils.CamerLocalDaoException;
+import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;

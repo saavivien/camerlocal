@@ -6,7 +6,7 @@
 package com.camerlocal.camerlocal.dao;
 
 import com.camerlocal.camerlocal.entities.Role;
-import com.camerlocal.camerlocal.serviceImpl.utils.CamerLocalDaoException;
+import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 
 /**
  *
