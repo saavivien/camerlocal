@@ -15,6 +15,9 @@ public class Constants {
     public static final String SIGNING_KEY = "vvskey";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
-    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_AGENT = "ROLE_AGENT";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_CLIENT = "ROLE_CLIENT";
+    public static final String DEFAULT_ADMIN_USERNAME = "admin@admin.com";
+    public static final String DEFAULT_ADMIN_NAME = "admin";
 }

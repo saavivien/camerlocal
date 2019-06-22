@@ -5,9 +5,11 @@
  */
 package com.camerlocal.camerlocal.serviceImpl;
 
+import com.camerlocal.camerlocal.config.Constants;
 import com.camerlocal.camerlocal.dao.RoleDao;
 import com.camerlocal.camerlocal.dao.UserDao;
 import com.camerlocal.camerlocal.dao.UserRoleDao;
+import com.camerlocal.camerlocal.entities.Role;
 import com.camerlocal.camerlocal.entities.User;
 import com.camerlocal.camerlocal.entities.UserRole;
 import com.camerlocal.camerlocal.service.UserService;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -58,16 +61,19 @@ public class UserServiceImpl
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public User createClient(User client) throws CamerLocalServiceException {
         try {
-            client.setCreationDate(new Date());
-            client.setModificationDate(new Date());
+            Date date = new Date();
+            client.setCreationDate(date);
+            client.setModificationDate(date);
             client.setIsActive(true);
             client.setUserCreator(client);
             User user = userDao.create(client);
             UserRole userRole = new UserRole();
             userRole.setUser(user);
-            userRole.setRole(roleDao.findRoleByName("CLIENT"));
+            Role role = roleDao.findRoleByName(Constants.ROLE_CLIENT);
+            userRole.setRole(role);
             userRoleDao.create(userRole);
             return user;
         } catch (Exception ex) {

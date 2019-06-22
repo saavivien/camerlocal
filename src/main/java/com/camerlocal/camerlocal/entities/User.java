@@ -6,10 +6,10 @@
 package com.camerlocal.camerlocal.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +28,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "user_table")
 @NamedQueries({
-    @NamedQuery(name = "user_find_user_by_user_name", query = "SELECT u FROM User u WHERE u.email = :userName")})
+    @NamedQuery(name = "user_find_user_by_user_name", query = "SELECT u FROM User u WHERE u.email = :userName")
+})
 public class User extends CoreObject implements UserDetails {
 
     private String title;
@@ -46,7 +47,7 @@ public class User extends CoreObject implements UserDetails {
     private String email;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<UserRole> listUserRoles;
 
     @JsonIgnore
