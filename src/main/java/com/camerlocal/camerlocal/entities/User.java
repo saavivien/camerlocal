@@ -5,12 +5,21 @@
  */
 package com.camerlocal.camerlocal.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -18,7 +27,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "user_table")
-public class User extends CoreObject {
+@NamedQueries({
+    @NamedQuery(name = "user_find_user_by_user_name", query = "SELECT u FROM User u WHERE u.email = :userName")
+})
+public class User extends CoreObject implements UserDetails {
 
     private String title;
 
@@ -31,26 +43,34 @@ public class User extends CoreObject {
 
     private String phone2;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<UserRole> listUserRoles;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userCreator", fetch = FetchType.LAZY)
     private List<CoreObject> listCoreObjectCreateds;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userArchivist", fetch = FetchType.LAZY)
     private List<CoreObject> listCoreObjectArchiveds;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEditor", fetch = FetchType.LAZY)
     private List<CoreObjectEdition> listCoreObjectEditions;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userCommentator", fetch = FetchType.LAZY)
     private List<Comment> listComments;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userMarker", fetch = FetchType.LAZY)
     private List<Mark> listMarks;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "basketOwner", fetch = FetchType.LAZY)
     private List<Basket> listBaskets;
 
@@ -70,6 +90,7 @@ public class User extends CoreObject {
         this.firstName = firstName;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -158,6 +179,41 @@ public class User extends CoreObject {
 
     public void setListBaskets(List<Basket> listBaskets) {
         this.listBaskets = listBaskets;
+    }
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        final List<GrantedAuthority> authorities = new ArrayList<>();
+        getListUserRoles().stream().forEach((UserRole userRole) -> {
+            authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
+        });
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return getIsActive();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

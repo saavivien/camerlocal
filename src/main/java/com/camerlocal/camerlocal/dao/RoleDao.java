@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.dao;
 
 import com.camerlocal.camerlocal.entities.Role;
+import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 
 /**
  *
@@ -13,4 +14,5 @@ import com.camerlocal.camerlocal.entities.Role;
  */
 public interface RoleDao extends GenericDao<Role, Long> {
 
+    public Role findRoleByName(String roleName) throws CamerLocalDaoException;
 }

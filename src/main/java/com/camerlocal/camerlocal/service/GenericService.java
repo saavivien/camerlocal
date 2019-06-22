@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.service;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
+import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,13 +19,13 @@ import java.util.List;
  */
 public interface GenericService<T extends Object, Id extends Serializable, Dao extends GenericDao<T, Id>> {
 
-    public T findById(Id id) throws Exception;
+    public T findById(Id id) throws CamerLocalServiceException;
 
-    public List<T> findAll() throws Exception;
+    public List<T> findAll() throws CamerLocalServiceException;
 
-    public T create(T t) throws Exception;
+    public T create(T t) throws CamerLocalServiceException;
 
-    public T update(T t) throws Exception;
+    public T update(T t) throws CamerLocalServiceException;
 
-    public void delete(T t) throws Exception;
+    public void delete(T t) throws CamerLocalServiceException;
 }

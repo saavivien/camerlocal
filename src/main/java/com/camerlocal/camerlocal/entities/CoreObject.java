@@ -5,9 +5,12 @@
  */
 package com.camerlocal.camerlocal.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,15 +49,17 @@ public abstract class CoreObject implements Serializable {
     @Column(name = "archiving_date")
     private Date archivingDate;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", columnDefinition = "default 'true'")
     private Boolean isActive;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonBackReference
     private User userCreator;
 
     @ManyToOne(optional = true)
     private User userArchivist;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "coreObjectEdited", fetch = FetchType.LAZY)
     private List<CoreObjectEdition> listCoreObjectEditions;
 

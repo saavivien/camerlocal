@@ -26,7 +26,7 @@ public class Localisation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_localisation")
     private Long idLocalisation;
-    
+
     private String city;
 
     @OneToMany(mappedBy = "localisation", fetch = FetchType.LAZY)

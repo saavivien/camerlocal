@@ -7,6 +7,9 @@ package com.camerlocal.camerlocal.service;
 
 import com.camerlocal.camerlocal.dao.UserDao;
 import com.camerlocal.camerlocal.entities.User;
+import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  *
@@ -14,4 +17,7 @@ import com.camerlocal.camerlocal.entities.User;
  */
 public interface UserService extends CoreObjectService<User, UserDao> {
 
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException;
+
+    public User createClient(User client) throws CamerLocalServiceException;
 }

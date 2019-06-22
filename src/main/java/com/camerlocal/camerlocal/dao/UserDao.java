@@ -13,4 +13,5 @@ import com.camerlocal.camerlocal.entities.User;
  */
 public interface UserDao extends CoreObjectDao<User> {
 
+    public User findUserByUserName(String userName) throws Exception;
 }

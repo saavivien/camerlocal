@@ -7,11 +7,11 @@ package com.camerlocal.camerlocal.serviceImpl;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
 import com.camerlocal.camerlocal.service.GenericService;
+import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
+import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class GenericServiceImpl<T extends Object, Id extends Serializable, Dao extends GenericDao<T, Id>>
         implements GenericService<T, Id, Dao> {
 
+    private final org.slf4j.Logger logger;
     Class<T> entityClass;
     protected Dao genericDao;
 
@@ -32,6 +33,7 @@ public abstract class GenericServiceImpl<T extends Object, Id extends Serializab
 //        this is aimed to extract the entity class
         ParameterizedType genericSuperClass = (ParameterizedType) getClass().getGenericSuperclass();
         this.entityClass = (Class<T>) genericSuperClass.getActualTypeArguments()[0];
+        logger = org.slf4j.LoggerFactory.getLogger(entityClass);
     }
 
     public Dao getGenericDao() {
@@ -43,55 +45,60 @@ public abstract class GenericServiceImpl<T extends Object, Id extends Serializab
     }
 
     @Override
-    public T findById(Id id) throws Exception {
+    public T findById(Id id) throws CamerLocalServiceException {
+        logger.debug("Service Getting" + entityClass.getName() + "by id " + id);
         try {
             return genericDao.findById(id);
-        } catch (Exception e) {
-            Logger.getLogger(GenericServiceImpl.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-            throw new Exception("unable to find entity " + entityClass.getName(), e);
+        } catch (CamerLocalDaoException e) {
+            logger.error("findById exception in" + entityClass.getName(), entityClass);
+            throw new CamerLocalServiceException("unable to find entity " + entityClass.getName(), e);
         }
     }
 
     @Override
-    public List<T> findAll() throws Exception {
+    public List<T> findAll() throws CamerLocalServiceException {
+        logger.debug("Service Getting all" + entityClass.getName());
         try {
             return genericDao.findAll();
-        } catch (Exception e) {
-            Logger.getLogger(GenericServiceImpl.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-            throw new Exception("unable to find All " + entityClass.getName(), e);
+        } catch (CamerLocalDaoException e) {
+            logger.error("findAll exception in" + entityClass.getName(), entityClass);
+            throw new CamerLocalServiceException("unable to find All " + entityClass.getName(), e);
         }
     }
 
     @Override
     @Transactional
-    public T create(T t) throws Exception {
+    public T create(T t) throws CamerLocalServiceException {
+        logger.debug("Service creating" + entityClass.getName());
         try {
             return genericDao.create(t);
-        } catch (Exception e) {
-            Logger.getLogger(GenericServiceImpl.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-            throw new Exception("unable to create a " + entityClass.getName(), e);
+        } catch (CamerLocalDaoException e) {
+            logger.error("create exception in" + entityClass.getName(), entityClass);
+            throw new CamerLocalServiceException("unable to create a " + entityClass.getName(), e);
         }
     }
 
     @Override
     @Transactional
-    public void delete(T t) throws Exception {
+    public void delete(T t) throws CamerLocalServiceException {
+        logger.debug("Service delete" + entityClass.getName());
         try {
             genericDao.delete(t);
-        } catch (Exception e) {
-            Logger.getLogger(GenericServiceImpl.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-            throw new Exception("unable to delete a " + entityClass.getName(), e);
+        } catch (CamerLocalDaoException e) {
+            logger.error("delete exception in" + entityClass.getName(), entityClass);
+            throw new CamerLocalServiceException("unable to delete a " + entityClass.getName(), e);
         }
     }
 
     @Override
     @Transactional
-    public T update(T t) throws Exception {
+    public T update(T t) throws CamerLocalServiceException {
+        logger.debug("Service updating" + entityClass.getName());
         try {
             return genericDao.update(t);
-        } catch (Exception e) {
-            Logger.getLogger(GenericServiceImpl.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-            throw new Exception("unable to update a" + entityClass.getName(), e);
+        } catch (CamerLocalDaoException e) {
+            logger.error("update exception in" + entityClass.getName(), entityClass);
+            throw new CamerLocalServiceException("unable to update a" + entityClass.getName(), e);
         }
     }
 
