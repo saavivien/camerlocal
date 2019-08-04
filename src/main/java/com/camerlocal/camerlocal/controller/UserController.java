@@ -51,7 +51,7 @@ public class UserController {
 
 //    @Secured("")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResource> findLocalisationById(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<UserResource> findUserById(@PathVariable("id") Long id) throws Exception {
         User user = userService.findById(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -76,7 +76,7 @@ public class UserController {
 
 //    @Secured("")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<User> deleteLocalisationService(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) throws Exception {
         User user = userService.findById(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

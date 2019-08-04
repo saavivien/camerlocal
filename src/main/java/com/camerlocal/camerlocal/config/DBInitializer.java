@@ -38,10 +38,9 @@ public class DBInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... strings) throws Exception {
         //check if it is the first deployemnt of this API
-        User userTest = null;
-        userTest = userDao.findUserByUserName(Constants.DEFAULT_ADMIN_USERNAME); 
-        
-        if (userTest == null) {
+        Role roleTest = roleDao.findRoleByName(Constants.ROLE_ADMIN);
+
+        if (roleTest == null) {
             //roles creation
             Role adminRole = new Role();
             Role agentRole = new Role();

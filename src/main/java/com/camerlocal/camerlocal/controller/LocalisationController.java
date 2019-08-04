@@ -50,7 +50,6 @@ public class LocalisationController {
     @PutMapping
     public ResponseEntity<Localisation> updateLocalisationService(@RequestBody Localisation localisation) throws Exception {
         Localisation l = localisationService.findById(localisation.getIdLocalisation());
-        System.out.println("********************** update method ************************");
         if (l == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

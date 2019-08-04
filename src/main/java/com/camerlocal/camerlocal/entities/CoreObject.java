@@ -37,6 +37,8 @@ public abstract class CoreObject implements Serializable {
 
     private String name;
 
+    private String description;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "creation_date")
     private Date creationDate;
@@ -133,6 +135,14 @@ public abstract class CoreObject implements Serializable {
 
     public void setListCoreObjectEditions(List<CoreObjectEdition> listCoreObjectEditions) {
         this.listCoreObjectEditions = listCoreObjectEditions;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

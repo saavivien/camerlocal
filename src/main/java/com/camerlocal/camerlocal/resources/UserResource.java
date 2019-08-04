@@ -5,6 +5,7 @@
  */
 package com.camerlocal.camerlocal.resources;
 
+import com.camerlocal.camerlocal.controller.CategoryController;
 import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.User;
 import org.springframework.hateoas.ResourceSupport;
@@ -22,9 +23,10 @@ public class UserResource extends ResourceSupport {
     public UserResource(User user) throws Exception {
         this.user = user;
         final long id = user.getId();
-        add(linkTo(UserController.class).withRel("users"));
-        add(linkTo(methodOn(UserController.class).findLocalisationById(id)).withSelfRel());
-//        add(linkTo(methodOn(UserController.class).findAllUser()).withRel("all"));
+        add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
+        add(linkTo(methodOn(UserController.class).findAllUser()).withRel("users"));
+        add(linkTo(methodOn(UserController.class).updateUser(user)).withRel("update"));
+//        add(linkTo(methodOn(UserController.class).deleteUser(user.getId())).withRel("delete"));
     }
 
     public User getUser() {

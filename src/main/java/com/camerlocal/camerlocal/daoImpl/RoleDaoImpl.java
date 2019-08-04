@@ -9,7 +9,6 @@ import com.camerlocal.camerlocal.dao.RoleDao;
 import com.camerlocal.camerlocal.entities.Role;
 import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 import java.util.List;
-import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 /**
