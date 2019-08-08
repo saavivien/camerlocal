@@ -47,16 +47,16 @@ public class LocalisationController {
         return new ResponseEntity<>(localisation, HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<Localisation> updateLocalisationService(@RequestBody Localisation localisation) throws Exception {
-        Localisation l = localisationService.findById(localisation.getIdLocalisation());
-        if (l == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        localisationService.update(localisation);
-        return new ResponseEntity<>(localisation, HttpStatus.OK);
-
-    }
+//    @PutMapping
+//    public ResponseEntity<Localisation> updateLocalisationService(@RequestBody Localisation localisation) throws Exception {
+//        Localisation l = localisationService.findById(localisation.getIdLocalisation());
+//        if (l == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        localisationService.update(localisation);
+//        return new ResponseEntity<>(localisation, HttpStatus.OK);
+//
+//    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Localisation> deleteLocalisationService(@PathVariable("id") Long id) throws Exception {

@@ -11,35 +11,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  *
  * @author vivien saa
  */
 @Entity
-public class ProviderProduct extends BaseObject {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class BaseObject implements Serializable {
 
-    @ManyToOne
-    private Provider provider;
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = "id")
+    private Long id;
 
-    @ManyToOne
-    private Product product;
-
-    public Provider getProvider() {
-        return provider;
+    public Long getId() {
+        return id;
     }
 
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

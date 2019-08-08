@@ -5,32 +5,34 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.CategoryController;
+import com.camerlocal.camerlocal.controller.GenericRestController;
 import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.User;
-import org.springframework.hateoas.ResourceSupport;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author vivien saa
  */
-public class UserResource extends ResourceSupport {
+@Component
+public class UserResource extends CamerLocalCoreResource<User> {
 
-    private final User user;
-
-    public UserResource(User user) throws Exception {
-        this.user = user;
-        final long id = user.getId();
-        add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
-        add(linkTo(methodOn(UserController.class).findAllUser()).withRel("users"));
-        add(linkTo(methodOn(UserController.class).updateUser(user)).withRel("update"));
-//        add(linkTo(methodOn(UserController.class).deleteUser(user.getId())).withRel("delete"));
+    public UserResource() {
+        super();
     }
 
-    public User getUser() {
-        return user;
+    public UserResource(User t) {
+        super(t);
+//        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));
+        add(linkTo(methodOn(UserController.class).findAll()).withRel("full_list"));
+//        add(linkTo(methodOn(UserController.class).update(entityClass)).withRel("update"));
+
     }
-//    
+
+    @Override
+    public UserResource getInstance(User t) {
+        return new UserResource(t);
+    }
 }

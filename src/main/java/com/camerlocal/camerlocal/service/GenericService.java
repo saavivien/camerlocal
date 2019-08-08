@@ -6,6 +6,8 @@
 package com.camerlocal.camerlocal.service;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
+import com.camerlocal.camerlocal.entities.BaseObject;
+import com.camerlocal.camerlocal.entities.User;
 import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @param <Id>
  * @param <Dao>
  */
-public interface GenericService<T extends Object, Id extends Serializable, Dao extends GenericDao<T, Id>> {
+public interface GenericService<T extends BaseObject, Id extends Serializable, Dao extends GenericDao<T, Id>> {
 
     public T findById(Id id) throws CamerLocalServiceException;
 

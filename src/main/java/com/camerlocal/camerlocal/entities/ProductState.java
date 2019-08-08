@@ -5,13 +5,9 @@
  */
 package com.camerlocal.camerlocal.entities;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
@@ -20,12 +16,7 @@ import javax.persistence.Temporal;
  * @author vivien saa
  */
 @Entity
-public class ProductState implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_product_state")
-    private Long idProductState;
+public class ProductState extends BaseObject {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "aquirement_date")
@@ -44,14 +35,6 @@ public class ProductState implements Serializable {
 
     @ManyToOne
     private Product productContainted;
-
-    public Long getIdProductState() {
-        return idProductState;
-    }
-
-    public void setIdProductState(Long idProductState) {
-        this.idProductState = idProductState;
-    }
 
     public Date getAquirementDate() {
         return aquirementDate;

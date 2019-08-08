@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.serviceImpl;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
+import com.camerlocal.camerlocal.entities.BaseObject;
 import com.camerlocal.camerlocal.service.GenericService;
 import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 import com.camerlocal.camerlocal.utils.CamerLocalServiceException;
@@ -21,10 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <Id>
  * @param <Dao>
  */
-public abstract class GenericServiceImpl<T extends Object, Id extends Serializable, Dao extends GenericDao<T, Id>>
+public abstract class GenericServiceImpl<T extends BaseObject, Id extends Serializable, Dao extends GenericDao<T, Id>>
         implements GenericService<T, Id, Dao> {
 
-    private final org.slf4j.Logger logger;
+    protected final org.slf4j.Logger logger;
     Class<T> entityClass;
     protected Dao genericDao;
 
