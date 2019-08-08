@@ -16,34 +16,23 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author vivien saa
  */
 @Entity
+@Table(name = "role_table")
 @NamedQueries({
     @NamedQuery(name = "role_find_role_by_role_name", query = "SELECT r FROM Role r WHERE r.roleName = :roleName")})
-public class Role implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_role")
-    private Long idRole;
+public class Role extends BaseObject {
 
     @Column(nullable = false, unique = true, name = "role_name")
     private String roleName;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserRole> listUserRole;
-
-    public Long getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
-    }
 
     public String getRoleName() {
         return roleName;

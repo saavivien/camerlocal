@@ -21,12 +21,7 @@ import javax.persistence.OneToMany;
  * @author vivien saa
  */
 @Entity
-public class Periods implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_period")
-    private Long idPeriod;
+public class Periods extends BaseObject {
 
     @ManyToOne
     private Product product;
@@ -36,14 +31,6 @@ public class Periods implements Serializable {
 
     @OneToMany(mappedBy = "periods", fetch = FetchType.LAZY)
     private List<AbundancePeriod> listAbundancePeriods;
-
-    public Long getIdPeriod() {
-        return idPeriod;
-    }
-
-    public void setIdPeriod(Long idPeriod) {
-        this.idPeriod = idPeriod;
-    }
 
     public Product getProduct() {
         return product;

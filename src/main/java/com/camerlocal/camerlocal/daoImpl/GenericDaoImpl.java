@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
+import com.camerlocal.camerlocal.entities.BaseObject;
 import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -22,7 +23,7 @@ import org.slf4j.Logger;
  * @param <T>
  * @param <Id>
  */
-public abstract class GenericDaoImpl<T extends Object, Id extends Serializable> implements GenericDao<T, Id> {
+public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializable> implements GenericDao<T, Id> {
 
     protected final Logger logger;
     @PersistenceContext

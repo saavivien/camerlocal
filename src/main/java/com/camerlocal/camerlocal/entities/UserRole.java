@@ -18,26 +18,13 @@ import javax.persistence.ManyToOne;
  * @author vivien saa
  */
 @Entity
-public class UserRole implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_user_role")
-    private Long idUserRole;
+public class UserRole extends BaseObject {
 
     @ManyToOne
     private Role role;
 
     @ManyToOne
     private User user;
-
-    public Long getIdUserRole() {
-        return idUserRole;
-    }
-
-    public void setIdUserRole(Long idUserRole) {
-        this.idUserRole = idUserRole;
-    }
 
     public Role getRole() {
         return role;

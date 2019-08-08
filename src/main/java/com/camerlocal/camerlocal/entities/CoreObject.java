@@ -14,9 +14,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
@@ -29,13 +26,11 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class CoreObject implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public abstract class CoreObject extends BaseObject {
 
     private String name;
+
+    private String description;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "creation_date")
@@ -49,7 +44,7 @@ public abstract class CoreObject implements Serializable {
     @Column(name = "archiving_date")
     private Date archivingDate;
 
-    @Column(name = "is_active", columnDefinition = "default 'true'")
+    @Column(name = "is_active")
     private Boolean isActive;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -62,14 +57,6 @@ public abstract class CoreObject implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "coreObjectEdited", fetch = FetchType.LAZY)
     private List<CoreObjectEdition> listCoreObjectEditions;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -133,6 +120,14 @@ public abstract class CoreObject implements Serializable {
 
     public void setListCoreObjectEditions(List<CoreObjectEdition> listCoreObjectEditions) {
         this.listCoreObjectEditions = listCoreObjectEditions;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

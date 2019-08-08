@@ -5,15 +5,11 @@
  */
 package com.camerlocal.camerlocal.entities;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -23,12 +19,7 @@ import javax.persistence.Temporal;
  * @author vivien saa
  */
 @Entity
-public class Basket implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_basket")
-    private Long idBasket;
+public class Basket extends BaseObject {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "creation_date")
@@ -43,14 +34,6 @@ public class Basket implements Serializable {
 
     @OneToMany(mappedBy = "basketContainer", fetch = FetchType.LAZY)
     private List<ProductState> listProductStates;
-
-    public Long getIdBasket() {
-        return idBasket;
-    }
-
-    public void setIdBasket(Long idBasket) {
-        this.idBasket = idBasket;
-    }
 
     public Date getCreationDate() {
         return creationDate;

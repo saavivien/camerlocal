@@ -5,12 +5,8 @@
  */
 package com.camerlocal.camerlocal.entities;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
@@ -18,12 +14,7 @@ import javax.persistence.ManyToOne;
  * @author vivien saa
  */
 @Entity
-public class Mark implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_mark")
-    private Long idMark;
+public class Mark extends BaseObject {
 
     @Column(name = "mark_value")
     private int markValue;
@@ -33,14 +24,6 @@ public class Mark implements Serializable {
 
     @ManyToOne
     private Product productMarked;
-
-    public Long getIdMark() {
-        return idMark;
-    }
-
-    public void setIdMark(Long idMark) {
-        this.idMark = idMark;
-    }
 
     public int getMarkValue() {
         return markValue;
