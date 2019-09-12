@@ -6,8 +6,10 @@
 package com.camerlocal.camerlocal.resources;
 
 import com.camerlocal.camerlocal.controller.UserController;
-import com.camerlocal.camerlocal.entities.Category;
+import com.camerlocal.camerlocal.entities.Product;
+import com.camerlocal.camerlocal.entities.Provider;
 import org.springframework.hateoas.ResourceSupport;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -16,12 +18,12 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  *
  * @author vivien saa
  */
-public class CategoryResource extends ResourceSupport {
+public class ProviderResource extends ResourceSupport {
 
-    public CategoryResource(Category category) {
-
-//        add(linkTo(methodOn(UserController.class).findById(id)).withSelfRel());
+    public ProviderResource(Provider provider) {
+//        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));
 //        add(linkTo(methodOn(UserController.class).findAll()).withRel("full_list"));
-//        add(linkTo(methodOn(UserController.class).update(category)).withRel("update"));
+//        add(linkTo(methodOn(UserController.class).update(entityClass)).withRel("update"));
+
     }
 }

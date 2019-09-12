@@ -21,7 +21,12 @@ import javax.persistence.OneToMany;
  * @author vivien saa
  */
 @Entity
-public class Periods extends BaseObject {
+public class Periods implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
     private Product product;
@@ -31,6 +36,14 @@ public class Periods extends BaseObject {
 
     @OneToMany(mappedBy = "periods", fetch = FetchType.LAZY)
     private List<AbundancePeriod> listAbundancePeriods;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Product getProduct() {
         return product;

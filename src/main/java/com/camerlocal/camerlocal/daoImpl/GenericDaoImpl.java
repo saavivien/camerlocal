@@ -6,8 +6,7 @@
 package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
-import com.camerlocal.camerlocal.entities.BaseObject;
-import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
+import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -15,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import org.slf4j.Logger;
 
 /**
  *
@@ -23,9 +21,8 @@ import org.slf4j.Logger;
  * @param <T>
  * @param <Id>
  */
-public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializable> implements GenericDao<T, Id> {
+public abstract class GenericDaoImpl<T extends Object, Id extends Serializable> implements GenericDao<T, Id> {
 
-    protected final Logger logger;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,12 +33,10 @@ public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializab
     public GenericDaoImpl() {
         ParameterizedType genericSuperClass = (ParameterizedType) getClass().getGenericSuperclass();
         this.entityClass = (Class<T>) genericSuperClass.getActualTypeArguments()[0];
-        logger = org.slf4j.LoggerFactory.getLogger(entityClass);
     }
 
     @Override
     public T findById(Id id) throws CamerLocalDaoException {
-        logger.debug("Dao getting" + entityClass.getName());
         try {
             return entityManager.find(entityClass, id);
         } catch (Exception e) {
@@ -52,13 +47,11 @@ public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializab
 
     @Override
     public List<T> findAll() throws CamerLocalDaoException {
-        logger.debug("Dao Getting all" + entityClass.getName());
         cb = entityManager.getCriteriaBuilder();
         cq = cb.createQuery(entityClass);
         cq.from(entityClass);
         try {
             return entityManager.createQuery(cq).getResultList();
-
         } catch (Exception e) {
             throw new CamerLocalDaoException(e.getMessage(), e.getCause());
         }
@@ -66,7 +59,6 @@ public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializab
 
     @Override
     public T create(T t) throws CamerLocalDaoException {
-        logger.debug("Dao Creating" + entityClass.getName());
         try {
             entityManager.persist(t);
             return t;
@@ -78,7 +70,6 @@ public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializab
 
     @Override
     public T update(T t) throws CamerLocalDaoException {
-        logger.debug("Dao Updating" + entityClass.getName());
         try {
             return entityManager.merge(t);
         } catch (Exception e) {
@@ -88,7 +79,6 @@ public abstract class GenericDaoImpl<T extends BaseObject, Id extends Serializab
 
     @Override
     public void delete(T t) throws CamerLocalDaoException {
-        logger.debug("Dao Deleting" + entityClass.getName());
         try {
             entityManager.remove(t);
         } catch (Exception e) {

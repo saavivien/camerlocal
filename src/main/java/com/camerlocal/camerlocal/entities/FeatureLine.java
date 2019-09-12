@@ -18,7 +18,12 @@ import javax.persistence.ManyToOne;
  * @author vivien saa
  */
 @Entity
-public class FeatureLine extends BaseObject {
+public class FeatureLine implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "feature_name")
     private String featureName;
@@ -28,6 +33,14 @@ public class FeatureLine extends BaseObject {
 
     @ManyToOne
     private FeatureGroup featureGroup;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFeatureName() {
         return featureName;
