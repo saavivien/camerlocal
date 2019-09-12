@@ -5,7 +5,12 @@
  */
 package com.camerlocal.camerlocal.entities;
 
+import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
@@ -13,13 +18,26 @@ import javax.persistence.ManyToOne;
  * @author vivien saa
  */
 @Entity
-public class ProductCategory extends BaseObject {
+public class ProductCategory implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
     private Product product;
 
     @ManyToOne
     private Category category;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Product getProduct() {
         return product;

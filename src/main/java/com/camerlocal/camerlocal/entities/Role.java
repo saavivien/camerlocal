@@ -26,13 +26,26 @@ import javax.persistence.Table;
 @Table(name = "role_table")
 @NamedQueries({
     @NamedQuery(name = "role_find_role_by_role_name", query = "SELECT r FROM Role r WHERE r.roleName = :roleName")})
-public class Role extends BaseObject {
+public class Role implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false, unique = true, name = "role_name")
     private String roleName;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserRole> listUserRole;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getRoleName() {
         return roleName;

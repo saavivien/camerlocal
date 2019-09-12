@@ -20,7 +20,12 @@ import javax.persistence.OneToMany;
  * @author vivien saa
  */
 @Entity
-public class FeatureGroup extends BaseObject {
+public class FeatureGroup implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "feature_group_name")
     private String featureGroupName;
@@ -30,6 +35,14 @@ public class FeatureGroup extends BaseObject {
 
     @OneToMany(mappedBy = "featureGroup")
     private List<FeatureLine> listFeatureLines;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFeatureGroupName() {
         return featureGroupName;

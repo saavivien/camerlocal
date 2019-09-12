@@ -8,6 +8,7 @@ package com.camerlocal.camerlocal.controller;
 import com.camerlocal.camerlocal.config.JwtTokenUtil;
 import com.camerlocal.camerlocal.entities.AuthToken;
 import com.camerlocal.camerlocal.entities.User;
+import com.camerlocal.camerlocal.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/login")
 public class AuthenticationController {
 
+    private final String USER_NOT_FOUND_EXCEPTION = "USER_NOT_FOUND_EXCEPTION";
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -44,8 +46,12 @@ public class AuthenticationController {
     public ResponseEntity<AuthToken> register(@RequestBody User loginUser) throws AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword()));
         final UserDetails user = userDetailService.loadUserByUsername(loginUser.getEmail());
-        final String token = jwtTokenUtil.generateToken(user);
-        return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
+        if (null != user) {
+            final String token = jwtTokenUtil.generateToken(user);
+            return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException(USER_NOT_FOUND_EXCEPTION);
+        }
     }
 
 }

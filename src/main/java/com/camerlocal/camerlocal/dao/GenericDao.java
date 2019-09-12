@@ -5,8 +5,7 @@
  */
 package com.camerlocal.camerlocal.dao;
 
-import com.camerlocal.camerlocal.entities.BaseObject;
-import com.camerlocal.camerlocal.utils.CamerLocalDaoException;
+import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @param <T>
  * @param <Id>
  */
-public interface GenericDao<T extends BaseObject, Id extends Serializable> {
+public interface GenericDao<T extends Object, Id extends Serializable> {
 
     public T findById(Id id) throws CamerLocalDaoException;
 

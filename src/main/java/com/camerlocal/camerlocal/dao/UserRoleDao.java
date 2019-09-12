@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.dao;
 
 import com.camerlocal.camerlocal.entities.UserRole;
+import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 
 /**
  *
@@ -13,4 +14,5 @@ import com.camerlocal.camerlocal.entities.UserRole;
  */
 public abstract interface UserRoleDao extends GenericDao<UserRole, Long> {
 
+    public void deleteUserRoleByUser(Long userId) throws CamerLocalDaoException;
 }
