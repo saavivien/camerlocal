@@ -60,7 +60,7 @@ public class DBInitializer implements CommandLineRunner {
             firstUser.setIsActive(Boolean.TRUE);
             firstUser.setName(Constants.DEFAULT_ADMIN_NAME);
             firstUser.setEmail(Constants.DEFAULT_ADMIN_USERNAME);
-            firstUser.setPassword(bcryptEncoder.encode("password"));
+            firstUser.setPassword(bcryptEncoder.encode(Constants.DEFAULT_ADMIN_PASSWORD));
             userDao.create(firstUser);
             UserRole userRole = new UserRole();
             userRole.setRole(adminRole);

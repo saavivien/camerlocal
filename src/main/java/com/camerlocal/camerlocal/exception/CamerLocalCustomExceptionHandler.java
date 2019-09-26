@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -45,19 +46,18 @@ public class CamerLocalCustomExceptionHandler extends ResponseEntityExceptionHan
     }
 
     @ExceptionHandler(UnAuthorizedRequestException.class)
-    public final ResponseEntity<ErrorResponse> handleUnAuthorizedRequestExeption(UnAuthorizedRequestException ex, WebRequest request) {
+    public final ResponseEntity<ErrorResponse> handleUnAuthorizedRequestException(UnAuthorizedRequestException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(new Date(), UNAUTHORIZED_REQUEST, details);
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFoundExeption(UserNotFoundException ex, WebRequest request) {
+    @ExceptionHandler(value = {UserNotFoundException.class, UsernameNotFoundException.class})
+    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex1, UsernameNotFoundException ex2, WebRequest request) {
         List<String> details = new ArrayList<>();
-        details.add(ex.getLocalizedMessage());
+        details.add((ex1 == null) ? ex2.getLocalizedMessage() : ex1.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(new Date(), USER_NOT_FOUND, details);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-
 }
