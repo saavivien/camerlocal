@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/authenticate")
+@RequestMapping("/api/login")
 public class CamerLocalAuthenticationController {
 
     @Autowired
@@ -43,11 +43,11 @@ public class CamerLocalAuthenticationController {
     private UserDetailsService userDetailService;
 
     @PostMapping
-    public ResponseEntity<AuthToken> register(@RequestBody User loginUser) throws AuthenticationException {
+    public ResponseEntity<AuthToken> login(@RequestBody User loginUser) throws AuthenticationException {
         final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        final UserDetails user = userDetailService.loadUserByUsername(loginUser.getEmail());
+        final User user = (User) userDetailService.loadUserByUsername(loginUser.getEmail());
         final String token = jwtTokenUtil.generateToken(user);
         return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
     }

@@ -5,13 +5,14 @@
  */
 package com.camerlocal.camerlocal.config;
 
-import static com.camerlocal.camerlocal.config.Constants.ACCESS_TOKEN_VALIDITY_SECONDS;
-import static com.camerlocal.camerlocal.config.Constants.SIGNING_KEY;
+import com.camerlocal.camerlocal.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class JwtTokenUtil implements Serializable {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(SIGNING_KEY)
+                .setSigningKey(Constants.SIGNING_KEY)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -48,22 +49,43 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(UserDetails user) {
+    public String generateToken(User user) {
         return doGenerateToken(user);
     }
 
-    private String doGenerateToken(UserDetails user) {
+    private String doGenerateToken(User user) {
 
-        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put("scopes", user.getAuthorities());
+        claims.put("name", user.getName());
+        claims.put("firstName", user.getFirstName());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuer("http://camerlocal-api.com")
+                .setIssuer(Constants.ISSUER)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS * 1000))
-                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS))
+                .signWith(SignatureAlgorithm.HS256, Constants.SIGNING_KEY)
                 .compact();
+    }
+
+    public String generateRefreshToken(User user) {
+//        if (StringUtils.isBlank(userContext.getUsername())) {
+//            throw new IllegalArgumentException("Cannot create JWT Token without username");
+//        }
+
+//        DatecurrentTime = new DateTime();
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("scopes", Arrays.asList(Constants.ROLE_REFRESH_TOKEN));
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuer(Constants.SIGNING_KEY)
+                .setId(UUID.randomUUID().toString())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000))
+                .signWith(SignatureAlgorithm.HS512, Constants.SIGNING_KEY)
+                .compact();
+
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

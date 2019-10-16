@@ -5,6 +5,7 @@
  */
 package com.camerlocal.camerlocal.config;
 
+import antlr.StringUtils;
 import static com.camerlocal.camerlocal.config.Constants.HEADER_STRING;
 import static com.camerlocal.camerlocal.config.Constants.TOKEN_PREFIX;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -39,8 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String userName = null;
         System.out.println("your request :" + req);
         String authToken = null;
-        if (header != null && header.startsWith(TOKEN_PREFIX)) {
-            authToken = header.replace(TOKEN_PREFIX, "");
+        if ((header != null) && header.startsWith(TOKEN_PREFIX)) {
+            authToken = header.substring(TOKEN_PREFIX.length(), header.length());
             try {
                 userName = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
@@ -60,9 +61,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                logger.info("authenticated user " + userName + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
+                SecurityContextHolder.clearContext();
             }
         }
 
