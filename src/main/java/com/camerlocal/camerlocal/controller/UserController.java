@@ -5,6 +5,7 @@
  */
 package com.camerlocal.camerlocal.controller;
 
+import static com.camerlocal.camerlocal.config.Constants.ROLE_ADMIN;
 import com.camerlocal.camerlocal.entities.Role;
 import com.camerlocal.camerlocal.entities.User;
 import com.camerlocal.camerlocal.resources.UserResource;
@@ -18,10 +19,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -99,14 +101,16 @@ public class UserController extends CamerLocalRestController {
     }
 
     @GetMapping
-    public ResponseEntity<Resources<UserResource>> findAllUsers() {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @Secured(ROLE_ADMIN)
+    public ResponseEntity<CollectionModel<UserResource>> findAllUsers() {
         List<UserResource> listResources = new ArrayList<>();
         try {
-            userService.findAll().forEach((t) -> listResources.add((new UserResource(t))));
+            userService.findAll().forEach(t -> listResources.add((new UserResource(t))));
         } catch (CamerLocalServiceException ex) {
             Logger.getLogger(CamerLocalRestController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return ResponseEntity.ok(new Resources<>(listResources));
+        return ResponseEntity.ok(new CollectionModel<>(listResources));
     }
 
 }

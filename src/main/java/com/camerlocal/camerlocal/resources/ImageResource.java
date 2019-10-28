@@ -5,19 +5,14 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.Image;
-import org.springframework.hateoas.ResourceSupport;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import org.springframework.stereotype.Component;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  *
  * @author vivien saa
  */
-public class ImageResource extends ResourceSupport {
+public class ImageResource extends RepresentationModel{
 
     public ImageResource(Image image) {
 //        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));

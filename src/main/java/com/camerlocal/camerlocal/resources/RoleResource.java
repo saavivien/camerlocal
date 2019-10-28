@@ -5,20 +5,14 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.UserController;
-import com.camerlocal.camerlocal.entities.Provider;
 import com.camerlocal.camerlocal.entities.Role;
-import org.springframework.hateoas.ResourceSupport;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import org.springframework.stereotype.Component;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  *
  * @author vivien saa
  */
-public class RoleResource extends ResourceSupport {
+public class RoleResource extends RepresentationModel {
 
     public RoleResource(Role role) {
 //        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));

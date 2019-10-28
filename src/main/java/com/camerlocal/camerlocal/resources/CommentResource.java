@@ -5,18 +5,14 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.Comment;
-import org.springframework.hateoas.ResourceSupport;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import org.springframework.stereotype.Component;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  *
  * @author vivien saa
  */
-public class CommentResource extends ResourceSupport {
+public class CommentResource extends RepresentationModel {
 
     public CommentResource(Comment comment) {
 //        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));

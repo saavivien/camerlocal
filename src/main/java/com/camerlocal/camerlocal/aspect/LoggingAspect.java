@@ -33,6 +33,10 @@ public class LoggingAspect {
             "(within(com.camerlocal.camerlocal.daoImpl..*) && @target(org.springframework.stereotype.Repository))"
             + " || (within(com.camerlocal.camerlocal.serviceImpl..*) && @target(org.springframework.stereotype.Service))"
             + " || (within(com.camerlocal.camerlocal.controller..*) && @target(org.springframework.web.bind.annotation.RestController))"
+            + " || within(com.camerlocal.camerlocal.config..*)"
+    //            + " || (@target(org.springframework.context.annotation.Configuration))"
+    //            + " || (@target(org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer))"
+    //            + " || (@target(org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer))"
     )
     public void springBeanPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.

@@ -16,11 +16,18 @@ import com.camerlocal.camerlocal.service.UserService;
 import com.camerlocal.camerlocal.utils.Action;
 import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 import com.camerlocal.camerlocal.exception.CamerLocalServiceException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +42,10 @@ public class UserServiceImpl
         extends CoreObjectServiceImpl<User, UserDao>
         implements UserService, UserDetailsService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private final UserDao userDao;
 
     @Autowired
@@ -52,18 +63,22 @@ public class UserServiceImpl
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserDetails ud = null;
+        User user = null;
         try {
-            ud = userDao.findUserByUserName(userName);
-            if (null != ud) {
-                return ud;
-            } else {
+            user = userDao.findUserByUserName(userName);
+            if (null == user) {
                 throw new UsernameNotFoundException("no user found with userName " + userName);
             }
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            user.getListUserRoles().forEach((UserRole userRole) -> {
+                authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
+            });
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+            return userDetails;
         } catch (Exception ex) {
-//            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return ud;
     }
 
     @Override
@@ -87,20 +102,18 @@ public class UserServiceImpl
     public User create(User user, List<Role> roles, User userCreator) throws CamerLocalServiceException {
         try {
             setMetaData(user, userCreator, Action.ADD);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User u = userDao.create(user);
-//            roles.stream().map(r -> { 
-//                UserRole ur = new UserRole();
-//                ur.setUser(user);
-//                ur.setRole(r);
-//                userRoleDao.create(ur);
-//            });
-
-            for (Role r : roles) {
+            roles.stream().forEach((Role r) -> {
                 UserRole ur = new UserRole();
                 ur.setUser(user);
                 ur.setRole(r);
-                userRoleDao.create(ur);
-            }
+                try {
+                    userRoleDao.create(ur);
+                } catch (CamerLocalDaoException ex) {
+                    Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             return u;
         } catch (CamerLocalDaoException ex) {
             throw new CamerLocalServiceException("unable to create user " + user.getName());

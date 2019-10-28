@@ -5,7 +5,6 @@
  */
 package com.camerlocal.camerlocal.controller;
 
-import com.camerlocal.camerlocal.config.JwtTokenUtil;
 import com.camerlocal.camerlocal.entities.AuthToken;
 import com.camerlocal.camerlocal.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +36,16 @@ public class CamerLocalAuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
     private UserDetailsService userDetailService;
 
-    @PostMapping
-    public ResponseEntity<AuthToken> login(@RequestBody User loginUser) throws AuthenticationException {
-        final Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        final User user = (User) userDetailService.loadUserByUsername(loginUser.getEmail());
-        final String token = jwtTokenUtil.generateToken(user);
-        return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
-    }
+//    @PostMapping
+//    public ResponseEntity<AuthToken> login(@RequestBody User loginUser) throws AuthenticationException {
+//        final Authentication authenticate = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authenticate);
+//        final User user = (User) userDetailService.loadUserByUsername(loginUser.getEmail());
+//        final String token = jwtTokenUtil.generateToken(user);
+//        return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
+//    }
 
 }

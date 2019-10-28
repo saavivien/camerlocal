@@ -5,18 +5,14 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.Category;
-import org.springframework.hateoas.ResourceSupport;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import org.springframework.stereotype.Component;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  *
  * @author vivien saa
  */
-public class CategoryResource extends ResourceSupport {
+public class CategoryResource extends RepresentationModel {
 
     public CategoryResource(Category category) {
 

@@ -15,6 +15,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DBInitializer implements CommandLineRunner {
 
     @Autowired
-    private BCryptPasswordEncoder bcryptEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -60,7 +61,7 @@ public class DBInitializer implements CommandLineRunner {
             firstUser.setIsActive(Boolean.TRUE);
             firstUser.setName(Constants.DEFAULT_ADMIN_NAME);
             firstUser.setEmail(Constants.DEFAULT_ADMIN_USERNAME);
-            firstUser.setPassword(bcryptEncoder.encode(Constants.DEFAULT_ADMIN_PASSWORD));
+            firstUser.setPassword(passwordEncoder.encode(Constants.DEFAULT_ADMIN_PASSWORD));
             userDao.create(firstUser);
             UserRole userRole = new UserRole();
             userRole.setRole(adminRole);

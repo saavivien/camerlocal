@@ -5,20 +5,16 @@
  */
 package com.camerlocal.camerlocal.controller;
 
-import com.camerlocal.camerlocal.dao.CategoryDao;
-import com.camerlocal.camerlocal.dao.CoreObjectDao;
 import com.camerlocal.camerlocal.entities.Category;
 import com.camerlocal.camerlocal.resources.CategoryResource;
 import com.camerlocal.camerlocal.service.CategoryService;
-import com.camerlocal.camerlocal.service.CoreObjectService;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +89,7 @@ public class CategoryController extends CamerLocalRestController {
 
 //    @Secured("")
     @GetMapping
-    public ResponseEntity<Resources<CategoryResource>> findAllCategory() throws Exception {
+    public ResponseEntity<CollectionModel<CategoryResource>> findAllCategory() throws Exception {
         List<CategoryResource> listCategoryResources = new ArrayList<>();
         categoryService.findAll().forEach((Category cat) -> {
             try {
@@ -105,7 +101,7 @@ public class CategoryController extends CamerLocalRestController {
         if (listCategoryResources.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        final Resources<CategoryResource> resources = new Resources<>(listCategoryResources);
+        final CollectionModel<CategoryResource> resources = new CollectionModel<>(listCategoryResources);
         return ResponseEntity.ok(resources);
     }
 }

@@ -5,19 +5,14 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.Product;
-import org.springframework.hateoas.ResourceSupport;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import org.springframework.stereotype.Component;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  *
  * @author vivien saa
  */
-public class ProductResource extends ResourceSupport {
+public class ProductResource extends RepresentationModel {
 
     public ProductResource(Product product) {
 
