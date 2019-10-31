@@ -12,7 +12,7 @@ import org.springframework.hateoas.RepresentationModel;
  *
  * @author vivien saa
  */
-public class ImageResource extends RepresentationModel{
+public class ImageResource extends RepresentationModel {
 
     public ImageResource(Image image) {
 //        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));

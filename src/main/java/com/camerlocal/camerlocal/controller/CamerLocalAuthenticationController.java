@@ -47,5 +47,4 @@ public class CamerLocalAuthenticationController {
 //        final String token = jwtTokenUtil.generateToken(user);
 //        return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
 //    }
-
 }

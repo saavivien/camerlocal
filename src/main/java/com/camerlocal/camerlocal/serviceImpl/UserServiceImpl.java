@@ -26,7 +26,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -62,19 +61,19 @@ public class UserServiceImpl
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public User loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user = null;
         try {
             user = userDao.findUserByUserName(userName);
             if (null == user) {
                 throw new UsernameNotFoundException("no user found with userName " + userName);
             }
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            user.getListUserRoles().forEach((UserRole userRole) -> {
-                authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
-            });
-            UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
-            return userDetails;
+//            List<GrantedAuthority> authorities = new ArrayList<>();
+//            user.getListUserRoles().forEach((UserRole userRole) -> {
+//                authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
+//            });
+//            UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+            return user;
         } catch (Exception ex) {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;

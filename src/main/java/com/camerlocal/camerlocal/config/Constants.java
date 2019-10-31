@@ -23,5 +23,5 @@ public class Constants {
     public static final String DEFAULT_ADMIN_NAME = "admin";
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String ISSUER = "http://localhost:8080/api/";
-    
+
 }

@@ -102,7 +102,6 @@ public class UserController extends CamerLocalRestController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @Secured(ROLE_ADMIN)
     public ResponseEntity<CollectionModel<UserResource>> findAllUsers() {
         List<UserResource> listResources = new ArrayList<>();
         try {

@@ -47,7 +47,7 @@ public class User extends CoreObject implements UserDetails {
     private String email;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<UserRole> listUserRoles;
 
     @JsonIgnore
@@ -57,10 +57,6 @@ public class User extends CoreObject implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "userArchivist", fetch = FetchType.LAZY)
     private List<CoreObject> listCoreObjectArchiveds;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "userEditor", fetch = FetchType.LAZY)
-    private List<CoreObjectEdition> listCoreObjectEditions;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userCommentator", fetch = FetchType.LAZY)
@@ -182,10 +178,9 @@ public class User extends CoreObject implements UserDetails {
     }
 
     @Override
-    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final List<GrantedAuthority> authorities = new ArrayList<>();
-        getListUserRoles().stream().forEach((UserRole userRole) -> {
+        getListUserRoles().forEach((UserRole userRole) -> {
             authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
         });
         return authorities;
