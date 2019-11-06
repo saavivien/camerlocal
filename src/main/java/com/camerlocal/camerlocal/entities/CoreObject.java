@@ -5,9 +5,12 @@
  */
 package com.camerlocal.camerlocal.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,33 +33,37 @@ public abstract class CoreObject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "id")
+    protected Long id;
+    protected String name;
 
-    private String name;
+    protected String description;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "creation_date")
-    private Date creationDate;
+    protected Date creationDate;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "modification_date")
-    private Date modificationDate;
+    protected Date modificationDate;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "archiving_date")
-    private Date archivingDate;
+    protected Date archivingDate;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    protected Boolean isActive;
 
-    @ManyToOne
-    private User userCreator;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonBackReference
+    protected User userCreator;
 
     @ManyToOne(optional = true)
-    private User userArchivist;
+    protected User userArchivist;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "coreObjectEdited", fetch = FetchType.LAZY)
-    private List<CoreObjectEdition> listCoreObjectEditions;
+    protected List<CoreObjectEdition> listCoreObjectEditions;
 
     public Long getId() {
         return id;
@@ -128,6 +135,14 @@ public abstract class CoreObject implements Serializable {
 
     public void setListCoreObjectEditions(List<CoreObjectEdition> listCoreObjectEditions) {
         this.listCoreObjectEditions = listCoreObjectEditions;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

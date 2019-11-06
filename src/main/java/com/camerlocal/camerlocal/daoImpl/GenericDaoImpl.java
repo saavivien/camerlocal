@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.daoImpl;
 
 import com.camerlocal.camerlocal.dao.GenericDao;
+import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -35,33 +36,55 @@ public abstract class GenericDaoImpl<T extends Object, Id extends Serializable> 
     }
 
     @Override
-    public T findById(Id id) throws Exception {
-        return entityManager.find(entityClass, id);
+    public T findById(Id id) throws CamerLocalDaoException {
+        try {
+            return entityManager.find(entityClass, id);
+        } catch (Exception e) {
+            throw new CamerLocalDaoException(e.getMessage(), e.getCause());
+        }
+
     }
 
     @Override
-    public List<T> findAll() throws Exception {
+    public List<T> findAll() throws CamerLocalDaoException {
         cb = entityManager.getCriteriaBuilder();
         cq = cb.createQuery(entityClass);
         cq.from(entityClass);
-        return entityManager.createQuery(cq).getResultList();
+        try {
+            return entityManager.createQuery(cq).getResultList();
+        } catch (Exception e) {
+            throw new CamerLocalDaoException(e.getMessage(), e.getCause());
+        }
     }
 
     @Override
-    public T create(T t) throws Exception {
-        entityManager.persist(t);
-        return t;
+    public T create(T t) throws CamerLocalDaoException {
+        try {
+            entityManager.persist(t);
+            return t;
+        } catch (Exception e) {
+            throw new CamerLocalDaoException(e.getMessage(), e.getCause());
+        }
 
     }
 
     @Override
-    public T update(T t) throws Exception {
-        return entityManager.merge(t);
+    public T update(T t) throws CamerLocalDaoException {
+        try {
+            return entityManager.merge(t);
+        } catch (Exception e) {
+            throw new CamerLocalDaoException(e.getMessage(), e.getCause());
+        }
     }
 
     @Override
-    public void delete(T t) throws Exception {
-        entityManager.remove(t);
+    public void delete(T t) throws CamerLocalDaoException {
+        try {
+            entityManager.remove(t);
+        } catch (Exception e) {
+            throw new CamerLocalDaoException(e.getMessage(), e.getCause());
+        }
+
     }
 
     public EntityManager getEntityManager() {

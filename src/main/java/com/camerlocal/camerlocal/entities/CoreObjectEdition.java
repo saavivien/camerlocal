@@ -22,21 +22,20 @@ public class CoreObjectEdition implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_core_cbject_edition")
-    private Long idCoreObjectEdition;
-
+    @Column(name = "id")
+    private Long id;
     @ManyToOne
     private User usereditor;
 
     @ManyToOne
     private CoreObject coreObjectEdited;
 
-    public Long getIdCoreObjectEdition() {
-        return idCoreObjectEdition;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdCoreObjectEdition(Long idCoreObjectEdition) {
-        this.idCoreObjectEdition = idCoreObjectEdition;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUsereditor() {

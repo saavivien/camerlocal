@@ -13,19 +13,25 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author vivien saa
  */
 @Entity
+@Table(name = "role_table")
+@NamedQueries({
+    @NamedQuery(name = "role_find_role_by_role_name", query = "SELECT r FROM Role r WHERE r.roleName = :roleName")})
 public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_role")
-    private Long idRole;
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false, unique = true, name = "role_name")
     private String roleName;
@@ -33,12 +39,12 @@ public class Role implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserRole> listUserRole;
 
-    public Long getIdRole() {
-        return idRole;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRoleName() {

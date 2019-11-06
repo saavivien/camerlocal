@@ -27,8 +27,8 @@ public class Basket implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_basket")
-    private Long idBasket;
+    @Column(name = "id")
+    private Long id;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "creation_date")
@@ -44,12 +44,12 @@ public class Basket implements Serializable {
     @OneToMany(mappedBy = "basketContainer", fetch = FetchType.LAZY)
     private List<ProductState> listProductStates;
 
-    public Long getIdBasket() {
-        return idBasket;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdBasket(Long idBasket) {
-        this.idBasket = idBasket;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getCreationDate() {

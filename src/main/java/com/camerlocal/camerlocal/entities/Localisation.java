@@ -24,20 +24,20 @@ public class Localisation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_localisation")
-    private Long idLocalisation;
-    
+    @Column(name = "id")
+    private Long id;
+
     private String city;
 
     @OneToMany(mappedBy = "localisation", fetch = FetchType.LAZY)
     private List<Periods> listPeriods;
 
-    public Long getIdLocalisation() {
-        return idLocalisation;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdLocalisation(Long idLocalisation) {
-        this.idLocalisation = idLocalisation;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCity() {

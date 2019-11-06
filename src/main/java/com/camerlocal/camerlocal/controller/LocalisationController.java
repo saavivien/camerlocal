@@ -5,13 +5,17 @@
  */
 package com.camerlocal.camerlocal.controller;
 
+import com.camerlocal.camerlocal.dao.LocalisationDao;
 import com.camerlocal.camerlocal.entities.Localisation;
+import com.camerlocal.camerlocal.resources.LocalisationResource;
+import com.camerlocal.camerlocal.service.GenericService;
 import com.camerlocal.camerlocal.service.LocalisationService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,55 +32,61 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/localisation")
-public class LocalisationController {
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600,
+        methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS},
+        allowedHeaders = "*")
+public class LocalisationController extends CamerLocalRestController {
 
     @Autowired
     private LocalisationService localisationService;
 
-    @PostMapping
-    public ResponseEntity<Localisation> createLocalisation(@RequestBody Localisation localisation) throws Exception {
-        Localisation l = localisationService.create(localisation);
-        return new ResponseEntity<>(l, HttpStatus.CREATED);
-    }
-
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Localisation> findLocalisationById(@PathVariable("id") Long id) throws Exception {
-        Localisation localisation = localisationService.findById(id);
-        if (localisation == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(localisation, HttpStatus.OK);
-    }
-
-    @PutMapping
-    public ResponseEntity<Localisation> updateLocalisationService(@RequestBody Localisation localisation) throws Exception {
-        Localisation l = localisationService.findById(localisation.getIdLocalisation());
-        System.out.println("********************** update method ************************");
-        if (l == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        localisationService.update(localisation);
-        return new ResponseEntity<>(localisation, HttpStatus.OK);
-
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Localisation> deleteLocalisationService(@PathVariable("id") Long id) throws Exception {
-        Localisation localisation = localisationService.findById(id);
-        if (localisation == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        localisationService.delete(localisation);
-        return new ResponseEntity<>(localisation, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Localisation>> findAllLocalisation() throws Exception {
-        List<Localisation> listLocalisation = localisationService.findAll();
-        if (listLocalisation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(listLocalisation, HttpStatus.OK);
-    }
-
+//    @Autowired
+//    public LocalisationController(LocalisationService service, LocalisationResource resource) {
+//        super(service, resource);
+//        this.localisationService = service;
+//    }
+//    @PostMapping
+//    public ResponseEntity<Localisation> createLocalisation(@RequestBody Localisation localisation) throws Exception {
+//        Localisation l = localisationService.create(localisation);
+//        return new ResponseEntity<>(l, HttpStatus.CREATED);
+//    }
+//    
+//    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Localisation> findLocalisationById(@PathVariable("id") Long id) throws Exception {
+//        Localisation localisation = localisationService.findById(id);
+//        if (localisation == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(localisation, HttpStatus.OK);
+//    }
+//
+////    @PutMapping
+////    public ResponseEntity<Localisation> updateLocalisationService(@RequestBody Localisation localisation) throws Exception {
+////        Localisation l = localisationService.findById(localisation.getIdLocalisation());
+////        if (l == null) {
+////            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+////        }
+////        localisationService.update(localisation);
+////        return new ResponseEntity<>(localisation, HttpStatus.OK);
+////
+////    }
+//    @DeleteMapping(value = "/{id}")
+//    public ResponseEntity<Localisation> deleteLocalisationService(@PathVariable("id") Long id) throws Exception {
+//        Localisation localisation = localisationService.findById(id);
+//        if (localisation == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        localisationService.delete(localisation);
+//        return new ResponseEntity<>(localisation, HttpStatus.OK);
+//    }
+//    
+//    @GetMapping
+//    public ResponseEntity<List<Localisation>> findAllLocalisation() throws Exception {
+//        List<Localisation> listLocalisation = localisationService.findAll();
+//        if (listLocalisation.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(listLocalisation, HttpStatus.OK);
+//    }
+//    
 }

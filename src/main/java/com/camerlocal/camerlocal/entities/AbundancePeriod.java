@@ -24,9 +24,8 @@ public class AbundancePeriod implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_abundance_period")
-    private Long idAbundancePeriod;
-
+    @Column(name = "id")
+    private Long id;
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "start_date")
     private Date startDate;
@@ -38,12 +37,12 @@ public class AbundancePeriod implements Serializable {
     @ManyToOne
     private Periods periods;
 
-    public Long getIdAbundancePeriod() {
-        return idAbundancePeriod;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdAbundancePeriod(Long idAbundancePeriod) {
-        this.idAbundancePeriod = idAbundancePeriod;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getStartDate() {

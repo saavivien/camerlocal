@@ -22,8 +22,8 @@ public class FeatureLine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_feature_line")
-    private Long idFeatureLine;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "feature_name")
     private String featureName;
@@ -34,12 +34,12 @@ public class FeatureLine implements Serializable {
     @ManyToOne
     private FeatureGroup featureGroup;
 
-    public Long getIdFeatureLine() {
-        return idFeatureLine;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdFeatureLine(Long idFeatureLine) {
-        this.idFeatureLine = idFeatureLine;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFeatureName() {

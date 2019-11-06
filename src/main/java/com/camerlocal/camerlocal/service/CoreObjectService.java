@@ -7,6 +7,8 @@ package com.camerlocal.camerlocal.service;
 
 import com.camerlocal.camerlocal.dao.CoreObjectDao;
 import com.camerlocal.camerlocal.entities.CoreObject;
+import com.camerlocal.camerlocal.entities.User;
+import com.camerlocal.camerlocal.exception.CamerLocalServiceException;
 
 /**
  *
@@ -16,4 +18,9 @@ import com.camerlocal.camerlocal.entities.CoreObject;
  */
 public interface CoreObjectService<CO extends CoreObject, Dao extends CoreObjectDao<CO>> extends GenericService<CO, Long, Dao> {
 
+    public CO create(CO c, User userCreator) throws CamerLocalServiceException;
+
+    public CO update(CO c, User userEditor) throws CamerLocalServiceException;
+
+    public CO archive(CO c, User userArchivist) throws CamerLocalServiceException;
 }

@@ -24,8 +24,8 @@ public class ProductState implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_product_state")
-    private Long idProductState;
+    @Column(name = "id")
+    private Long id;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "aquirement_date")
@@ -45,12 +45,12 @@ public class ProductState implements Serializable {
     @ManyToOne
     private Product productContainted;
 
-    public Long getIdProductState() {
-        return idProductState;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdProductState(Long idProductState) {
-        this.idProductState = idProductState;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getAquirementDate() {

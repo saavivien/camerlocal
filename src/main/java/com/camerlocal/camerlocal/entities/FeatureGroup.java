@@ -24,8 +24,8 @@ public class FeatureGroup implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_feature_group ")
-    private Long idFeatureGroup;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "feature_group_name")
     private String featureGroupName;
@@ -36,12 +36,12 @@ public class FeatureGroup implements Serializable {
     @OneToMany(mappedBy = "featureGroup")
     private List<FeatureLine> listFeatureLines;
 
-    public Long getIdFeatureGroup() {
-        return idFeatureGroup;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdFeatureGroup(Long idFeatureGroup) {
-        this.idFeatureGroup = idFeatureGroup;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFeatureGroupName() {

@@ -22,8 +22,8 @@ public class ProviderProduct implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_provider_product")
-    private Long idProviderProduct;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
     private Provider provider;
@@ -31,12 +31,12 @@ public class ProviderProduct implements Serializable {
     @ManyToOne
     private Product product;
 
-    public Long getIdProviderProduct() {
-        return idProviderProduct;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdProviderProduct(Long idProviderProduct) {
-        this.idProviderProduct = idProviderProduct;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Provider getProvider() {

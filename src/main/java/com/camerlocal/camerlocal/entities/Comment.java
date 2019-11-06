@@ -24,8 +24,8 @@ public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_comment")
-    private String idComment;
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false, name = "comment_date")
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -40,12 +40,12 @@ public class Comment implements Serializable {
     @ManyToOne(optional = true)
     private Product productCommented;
 
-    public String getIdComment() {
-        return idComment;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdComment(String idComment) {
-        this.idComment = idComment;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getCommentDate() {

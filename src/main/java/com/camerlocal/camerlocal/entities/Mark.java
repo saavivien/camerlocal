@@ -22,8 +22,8 @@ public class Mark implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_mark")
-    private Long idMark;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "mark_value")
     private int markValue;
@@ -34,12 +34,12 @@ public class Mark implements Serializable {
     @ManyToOne
     private Product productMarked;
 
-    public Long getIdMark() {
-        return idMark;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdMark(Long idMark) {
-        this.idMark = idMark;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getMarkValue() {

@@ -22,8 +22,8 @@ public class DescriptionLine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_description_line")
-    private Long idDescriptionLine;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "description_name")
     private String descriptionName;
@@ -34,12 +34,12 @@ public class DescriptionLine implements Serializable {
     @ManyToOne
     private Product product;
 
-    public Long getIdDescriptionLine() {
-        return idDescriptionLine;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdDescriptionLine(Long idDescriptionLine) {
-        this.idDescriptionLine = idDescriptionLine;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescriptionName() {

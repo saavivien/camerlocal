@@ -25,8 +25,8 @@ public class Periods implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_period")
-    private Long idPeriod;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
     private Product product;
@@ -37,12 +37,12 @@ public class Periods implements Serializable {
     @OneToMany(mappedBy = "periods", fetch = FetchType.LAZY)
     private List<AbundancePeriod> listAbundancePeriods;
 
-    public Long getIdPeriod() {
-        return idPeriod;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdPeriod(Long idPeriod) {
-        this.idPeriod = idPeriod;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Product getProduct() {
