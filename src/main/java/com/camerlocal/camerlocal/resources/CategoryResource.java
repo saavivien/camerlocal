@@ -14,10 +14,18 @@ import org.springframework.hateoas.RepresentationModel;
  */
 public class CategoryResource extends RepresentationModel {
 
+    private Category category;
+
     public CategoryResource(Category category) {
+        this.category = category;
 
 //        add(linkTo(methodOn(UserController.class).findById(id)).withSelfRel());
 //        add(linkTo(methodOn(UserController.class).findAll()).withRel("full_list"));
 //        add(linkTo(methodOn(UserController.class).update(category)).withRel("update"));
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
 }

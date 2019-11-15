@@ -91,17 +91,16 @@ public class CategoryController extends CamerLocalRestController {
     @GetMapping
     public ResponseEntity<CollectionModel<CategoryResource>> findAllCategory() throws Exception {
         List<CategoryResource> listCategoryResources = new ArrayList<>();
-        categoryService.findAll().forEach((Category cat) -> {
             try {
-                listCategoryResources.add(new CategoryResource(cat));
+           categoryService.findAll().forEach(cat-> listCategoryResources.add(new CategoryResource(cat)));
             } catch (Exception ex) {
                 Logger.getLogger(CategoryController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
-        if (listCategoryResources.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        final CollectionModel<CategoryResource> resources = new CollectionModel<>(listCategoryResources);
-        return ResponseEntity.ok(resources);
+            System.out.println("======================"+listCategoryResources+"====================");
+        //if (listCategoryResources.isEmpty()) {
+        //    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        //}
+       // final CollectionModel<CategoryResource> resources = new CollectionModel<>(listCategoryResources);
+        return ResponseEntity.ok(new CollectionModel<>(listCategoryResources));
     }
 }

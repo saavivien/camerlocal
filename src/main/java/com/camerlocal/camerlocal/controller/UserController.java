@@ -71,7 +71,7 @@ public class UserController extends CamerLocalRestController {
         }
     }
 
-    @PostMapping
+    @PostMapping    
     public ResponseEntity<UserResource> createUser(@RequestBody User user, @RequestBody List<Role> roles) {
         try {
             User u = userService.create(user, roles, getAuthenticatedUser());
