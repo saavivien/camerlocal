@@ -13,12 +13,20 @@ import org.springframework.hateoas.RepresentationModel;
  * @author vivien saa
  */
 public class ProductResource extends RepresentationModel {
+    private Product product;
 
     public ProductResource(Product product) {
+        this.product=product;
+        
 
 //        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));
 //        add(linkTo(methodOn(UserController.class).findAll()).withRel("full_list"));
 //        add(linkTo(methodOn(UserController.class).update(entityClass)).withRel("update"));
     }
+
+    public Product getProduct() {
+        return product;
+    }
+    
 
 }
