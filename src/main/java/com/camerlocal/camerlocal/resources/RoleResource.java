@@ -14,10 +14,17 @@ import org.springframework.hateoas.RepresentationModel;
  */
 public class RoleResource extends RepresentationModel {
 
+    private final Role role;
+
     public RoleResource(Role role) {
+        this.role = role;
 //        add(linkTo(methodOn(UserController.class).findById()).withSelfRel(id));
 //        add(linkTo(methodOn(UserController.class).findAll()).withRel("full_list"));
 //        add(linkTo(methodOn(UserController.class).update(entityClass)).withRel("update"));
 
+    }
+
+    public Role getRole() {
+        return role;
     }
 }

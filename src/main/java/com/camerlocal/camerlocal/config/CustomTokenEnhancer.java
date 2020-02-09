@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
 /**
  * this class is aim to customizing the token claim
+ *
  * @author vivien saa
  */
 public class CustomTokenEnhancer implements TokenEnhancer {
@@ -23,8 +24,8 @@ public class CustomTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         User user = ((User) authentication.getPrincipal());
         Map<String, Object> additionalInfo = new HashMap<>();
-        additionalInfo.put(
-                "firstName", user.getFirstName());
+        additionalInfo.put("firstName", user.getFirstName());
+        additionalInfo.put("userId", user.getId());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(
                 additionalInfo);
         return accessToken;

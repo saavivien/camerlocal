@@ -5,7 +5,6 @@
  */
 package com.camerlocal.camerlocal.resources;
 
-import com.camerlocal.camerlocal.controller.UserController;
 import com.camerlocal.camerlocal.entities.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;

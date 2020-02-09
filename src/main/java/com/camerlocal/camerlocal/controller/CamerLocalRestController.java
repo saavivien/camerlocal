@@ -18,6 +18,6 @@ public class CamerLocalRestController {
     protected final String INTERNAL_SERVER_ERROR_MESSAGE = "your request might not be good, check and if needed contact the help support on +237697435439";
 
     protected User getAuthenticatedUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication();
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

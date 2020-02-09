@@ -5,6 +5,8 @@
  */
 package com.camerlocal.camerlocal.entities;
 
+import com.camerlocal.camerlocal.config.Constants;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
@@ -13,10 +15,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -36,8 +40,15 @@ public class Role implements Serializable {
     @Column(nullable = false, unique = true, name = "role_name")
     private String roleName;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserRole> listUserRole;
+    @Transient
+    private String displayedName;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+//    private List<UserRole> listUserRole;
 
     public Long getId() {
         return id;
@@ -55,12 +66,41 @@ public class Role implements Serializable {
         this.roleName = roleName;
     }
 
-    public List<UserRole> getListUserRole() {
-        return listUserRole;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setListUserRole(List<UserRole> listUserRole) {
-        this.listUserRole = listUserRole;
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+//    public List<UserRole> getListUserRole() {
+//        return listUserRole;
+//    }
+//
+//    public void setListUserRole(List<UserRole> listUserRole) {
+//        this.listUserRole = listUserRole;
+//    }
+    public String getDisplayedName() {
+        this.displayedName = null;
+        switch (getRoleName()) {
+            case Constants.ROLE_ADMIN:
+                this.displayedName = "Adminitrator";
+                break;
+            case Constants.ROLE_AGENT:
+                this.displayedName = "Standard User";
+                break;
+            case Constants.ROLE_CLIENT:
+                this.displayedName = "Client";
+                break;
+            default:
+                break;
+        }
+        return this.displayedName;
+    }
+
+    public void setDisplaydName(String DisplaydName) {
+        this.displayedName = DisplaydName;
     }
 
 }

@@ -7,14 +7,13 @@ package com.camerlocal.camerlocal.config;
 
 import com.camerlocal.camerlocal.dao.RoleDao;
 import com.camerlocal.camerlocal.dao.UserDao;
-import com.camerlocal.camerlocal.dao.UserRoleDao;
 import com.camerlocal.camerlocal.entities.Role;
 import com.camerlocal.camerlocal.entities.User;
-import com.camerlocal.camerlocal.entities.UserRole;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +31,6 @@ public class DBInitializer implements CommandLineRunner {
     private RoleDao roleDao;
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private UserRoleDao userRoleDao;
 
     @Override
     @Transactional
@@ -50,7 +47,7 @@ public class DBInitializer implements CommandLineRunner {
             agentRole.setRoleName(Constants.ROLE_AGENT);
             clientRole.setRoleName(Constants.ROLE_CLIENT);
 
-            roleDao.create(adminRole);
+            adminRole = roleDao.create(adminRole);
             roleDao.create(agentRole);
             roleDao.create(clientRole);
 
@@ -62,11 +59,10 @@ public class DBInitializer implements CommandLineRunner {
             firstUser.setName(Constants.DEFAULT_ADMIN_NAME);
             firstUser.setEmail(Constants.DEFAULT_ADMIN_USERNAME);
             firstUser.setPassword(passwordEncoder.encode(Constants.DEFAULT_ADMIN_PASSWORD));
+            List<Role> roles = new ArrayList<>();
+            roles.add(adminRole);
+            firstUser.setRoles(roles);
             userDao.create(firstUser);
-            UserRole userRole = new UserRole();
-            userRole.setRole(adminRole);
-            userRole.setUser(firstUser);
-            userRoleDao.create(userRole);
         }
 
     }

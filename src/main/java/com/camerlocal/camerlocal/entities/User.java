@@ -6,13 +6,17 @@
 package com.camerlocal.camerlocal.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,6 +41,7 @@ public class User extends CoreObject implements UserDetails {
     @Column(name = "first_name")
     private String firstName;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String phone1;
@@ -47,9 +52,20 @@ public class User extends CoreObject implements UserDetails {
     private String email;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<UserRole> listUserRoles;
+    @Column(unique = true)
+    private String profileImageName;
 
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//    private List<UserRole> listUserRoles;
     @JsonIgnore
     @OneToMany(mappedBy = "userCreator", fetch = FetchType.LAZY)
     private List<CoreObject> listCoreObjectCreateds;
@@ -119,12 +135,27 @@ public class User extends CoreObject implements UserDetails {
         this.email = email;
     }
 
-    public List<UserRole> getListUserRoles() {
-        return listUserRoles;
+    public String getProfileImageName() {
+        return profileImageName;
     }
 
-    public void setListUserRoles(List<UserRole> listUserRoles) {
-        this.listUserRoles = listUserRoles;
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
+    }
+
+//    public List<UserRole> getListUserRoles() {
+//        return listUserRoles;
+//    }
+//
+//    public void setListUserRoles(List<UserRole> listUserRoles) {
+//        this.listUserRoles = listUserRoles;
+//    }
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public List<CoreObject> getListCoreObjectCreateds() {
@@ -180,8 +211,8 @@ public class User extends CoreObject implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final List<GrantedAuthority> authorities = new ArrayList<>();
-        getListUserRoles().forEach((UserRole userRole) -> {
-            authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
+        getRoles().forEach((Role role) -> {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         });
         return authorities;
     }

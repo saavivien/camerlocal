@@ -8,14 +8,13 @@ package com.camerlocal.camerlocal.serviceImpl;
 import com.camerlocal.camerlocal.config.Constants;
 import com.camerlocal.camerlocal.dao.RoleDao;
 import com.camerlocal.camerlocal.dao.UserDao;
-import com.camerlocal.camerlocal.dao.UserRoleDao;
 import com.camerlocal.camerlocal.entities.Role;
 import com.camerlocal.camerlocal.entities.User;
-import com.camerlocal.camerlocal.entities.UserRole;
 import com.camerlocal.camerlocal.service.UserService;
 import com.camerlocal.camerlocal.utils.Action;
 import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 import com.camerlocal.camerlocal.exception.CamerLocalServiceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,9 +46,6 @@ public class UserServiceImpl
     private RoleDao roleDao;
 
     @Autowired
-    private UserRoleDao userRoleDao;
-
-    @Autowired
     public UserServiceImpl(UserDao userDao) {
         super(userDao);
         this.userDao = userDao;
@@ -58,9 +54,8 @@ public class UserServiceImpl
     @Override
     @Transactional(readOnly = true)
     public User loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = null;
         try {
-            user = userDao.findUserByUserName(userName);
+            User user = userDao.findUserByUserName(userName);
             if (null == user) {
                 throw new UsernameNotFoundException("no user found with userName " + userName);
             }
@@ -80,59 +75,71 @@ public class UserServiceImpl
     @Transactional(propagation = Propagation.REQUIRED)
     public User createClient(User client) throws CamerLocalServiceException {
         try {
+            /* saving Client first, allows to set him as the user creator. this is used in order to avoid 
+            "CascadeType=Persist" that will generate a problem when it will come to create a user by 
+            another user existing yet 
+             */
+            userDao.create(client);
             setMetaData(client, client, Action.ADD);
-            User user = userDao.create(client);
-            UserRole userRole = new UserRole();
-            userRole.setUser(user);
-            Role role = roleDao.findRoleByName(Constants.ROLE_CLIENT);
-            userRole.setRole(role);
-            userRoleDao.create(userRole);
+            client.setPassword(passwordEncoder.encode(client.getPassword()));
+            List<Role> roles = new ArrayList<>();
+            roles.add(roleDao.findRoleByName(Constants.ROLE_CLIENT));
+            client.setRoles(roles);
+            User user = userDao.update(client);
             return user;
-        } catch (Exception ex) {
+        } catch (CamerLocalDaoException ex) {
             throw new CamerLocalServiceException("unable to create client " + client.getName(), ex);
         }
     }
 
     @Override
-    public User create(User user, List<Role> roles, User userCreator) throws CamerLocalServiceException {
+    public User create(User user, User userCreator) throws CamerLocalServiceException {
         try {
             setMetaData(user, userCreator, Action.ADD);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            User u = userDao.create(user);
-            roles.stream().forEach((Role r) -> {
-                UserRole ur = new UserRole();
-                ur.setUser(user);
-                ur.setRole(r);
-                try {
-                    userRoleDao.create(ur);
-                } catch (CamerLocalDaoException ex) {
-                    Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            return u;
+            return userDao.create(user);
         } catch (CamerLocalDaoException ex) {
             throw new CamerLocalServiceException("unable to create user " + user.getName());
         }
-
     }
 
     @Override
-    public User update(User user, List<Role> roles, User userEditor) throws CamerLocalServiceException {
+    public User update(Long id, User user, User userEditor) throws CamerLocalServiceException {
         try {
-            setMetaData(user, userEditor, Action.EDIT);
-            userRoleDao.deleteUserRoleByUser(user.getId());
-            User u = userDao.update(user);
-            for (Role r : roles) {
-                UserRole ur = new UserRole();
-                ur.setUser(user);
-                ur.setRole(r);
-                userRoleDao.create(ur);
-            }
-            return u;
+            User u = userDao.findById(id);
+            //copy user's data since we dont want to change the password. The incoming user doen't have that password
+            u.setEmail(user.getEmail());
+            u.setDescription(user.getDescription());
+            u.setEmail(user.getEmail());
+            u.setFirstName(user.getFirstName());
+            u.setName(user.getName());
+            u.setPhone1(user.getPhone1());
+            u.setPhone2(user.getPhone2());
+            u.setTitle(user.getTitle());
+            u.setRoles(user.getRoles());
+
+            setMetaData(u, userEditor, Action.EDIT);
+
+            return userDao.update(u);
+
         } catch (CamerLocalDaoException ex) {
             throw new CamerLocalServiceException("unable to update user " + user.getName());
         }
+    }
 
+    @Override
+    public User findUserByUsername(String userName) throws CamerLocalServiceException {
+
+        try {
+            User user = userDao.findUserByUserName(userName);
+            if (null == user) {
+                throw new UsernameNotFoundException("no user found with userName " + userName);
+            }
+            return user;
+        } catch (Exception ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
 }

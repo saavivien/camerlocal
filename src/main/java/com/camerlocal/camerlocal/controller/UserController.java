@@ -5,19 +5,24 @@
  */
 package com.camerlocal.camerlocal.controller;
 
-import static com.camerlocal.camerlocal.config.Constants.ROLE_ADMIN;
-import com.camerlocal.camerlocal.entities.Role;
 import com.camerlocal.camerlocal.entities.User;
 import com.camerlocal.camerlocal.resources.UserResource;
 import com.camerlocal.camerlocal.service.UserService;
 import com.camerlocal.camerlocal.exception.CamerLocalServiceException;
 import com.camerlocal.camerlocal.exception.InternalServerException;
 import com.camerlocal.camerlocal.exception.RecordNotFoundException;
+import com.camerlocal.camerlocal.utils.ImageUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -26,13 +31,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -51,6 +59,7 @@ public class UserController extends CamerLocalRestController {
     private UserService userService;
 
     @PostMapping(value = "/client")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserResource> createUserClient(@RequestBody User user) throws Exception {
         User u = userService.createClient(user);
         final URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/client").buildAndExpand().toUri();
@@ -58,6 +67,7 @@ public class UserController extends CamerLocalRestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserResource> findUserById(@PathVariable("id") Long id) {
         try {
             User user = userService.findById(id);
@@ -72,9 +82,26 @@ public class UserController extends CamerLocalRestController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResource> createUser(@RequestBody User user, @RequestBody List<Role> roles) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserResource> createUser(@RequestBody User user) {
         try {
-            User u = userService.create(user, roles, getAuthenticatedUser());
+            System.out.println("============================" + user.getRoles() + "===================================");
+            User u = userService.create(user, getAuthenticatedUser());
+            final URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(u.getId()).toUri();
+            return ResponseEntity.created(uri).body(new UserResource(u));
+        } catch (CamerLocalServiceException ex) {
+            throw new InternalServerException(INTERNAL_SERVER_ERROR_MESSAGE + ex);
+        }
+    }
+
+    @PostMapping(value = {"/userprofile"})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserResource> createUserWithProfile(@RequestParam(value = "user") String user, @RequestParam(value = "image") MultipartFile file) throws JsonProcessingException {
+        try {
+            User userModel = new ObjectMapper().readValue(user, User.class);
+            String profileImageName = ImageUtils.saveImage("path/imageprofile", file);
+            userModel.setProfileImageName(profileImageName);
+            User u = userService.create(userModel, getAuthenticatedUser());
             final URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(u.getId()).toUri();
             return ResponseEntity.created(uri).body(new UserResource(u));
         } catch (CamerLocalServiceException ex) {
@@ -83,11 +110,12 @@ public class UserController extends CamerLocalRestController {
 
     }
 
-    @PutMapping
-    public ResponseEntity<UserResource> updateUser(@RequestBody User user, @RequestBody List<Role> roles) {
+    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserResource> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         User u;
         try {
-            u = userService.update(user, roles, getAuthenticatedUser());
+            u = userService.update(id, user, getAuthenticatedUser());
             if (null != u) {
                 final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
                 return ResponseEntity.created(uri).body(new UserResource(u));
@@ -95,6 +123,21 @@ public class UserController extends CamerLocalRestController {
             throw new RecordNotFoundException("no user found with id :" + user.getId());
         } catch (CamerLocalServiceException ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerException(INTERNAL_SERVER_ERROR_MESSAGE + ex);
+        }
+
+    }
+
+    @PutMapping(value = {"/userprofile"})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserResource> updateUserWithProfile(@RequestParam(value = "user") User user, @RequestParam(value = "image") MultipartFile file) {
+        try {
+            String profileImageName = ImageUtils.saveImage("path/imageprofile", file);
+            user.setProfileImageName(profileImageName);
+            User u = userService.create(user, getAuthenticatedUser());
+            final URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(u.getId()).toUri();
+            return ResponseEntity.created(uri).body(new UserResource(u));
+        } catch (CamerLocalServiceException ex) {
             throw new InternalServerException(INTERNAL_SERVER_ERROR_MESSAGE + ex);
         }
 
@@ -110,6 +153,21 @@ public class UserController extends CamerLocalRestController {
             Logger.getLogger(CamerLocalRestController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ResponseEntity.ok(new CollectionModel<>(listResources));
+    }
+
+    @GetMapping(path = {"/email"})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserResource> findUserByUserName(@PathVariable("email") String email) {
+        try {
+            User user = userService.findUserByUsername(email);
+            if (null != user) {
+                return new ResponseEntity<>(new UserResource(user), HttpStatus.OK);
+            }
+            throw new RecordNotFoundException("no user found with email :" + email);
+        } catch (CamerLocalServiceException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerException(INTERNAL_SERVER_ERROR_MESSAGE + ex);
+        }
     }
 
 }
