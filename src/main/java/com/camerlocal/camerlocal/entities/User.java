@@ -7,10 +7,10 @@ package com.camerlocal.camerlocal.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -52,8 +53,9 @@ public class User extends CoreObject implements UserDetails {
     private String email;
 
     @JsonIgnore
-    @Column(unique = true)
-    private String profileImageName;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private Image profileImage;
 
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(fetch = FetchType.EAGER)
@@ -135,12 +137,12 @@ public class User extends CoreObject implements UserDetails {
         this.email = email;
     }
 
-    public String getProfileImageName() {
-        return profileImageName;
+    public Image getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfileImageName(String profileImageName) {
-        this.profileImageName = profileImageName;
+    public void setProfileImage(Image profileImage) {
+        this.profileImage = profileImage;
     }
 
 //    public List<UserRole> getListUserRoles() {

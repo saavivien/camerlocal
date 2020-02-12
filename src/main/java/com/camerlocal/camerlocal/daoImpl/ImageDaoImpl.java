@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * @author vivien saa
  */
 @Repository
-public class ImageDaoImpl extends CoreObjectDaoImpl<Image>
+public class ImageDaoImpl extends GenericDaoImpl<Image, Long>
         implements ImageDao {
 
 }

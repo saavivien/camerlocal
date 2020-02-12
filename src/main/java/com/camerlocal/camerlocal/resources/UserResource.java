@@ -6,8 +6,11 @@
 package com.camerlocal.camerlocal.resources;
 
 import com.camerlocal.camerlocal.entities.User;
+import java.io.FileInputStream;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.hateoas.RepresentationModel;
 
 /**
@@ -17,9 +20,15 @@ import org.springframework.hateoas.RepresentationModel;
 public class UserResource extends RepresentationModel {
 
     private User user;
+    private String image;
 
     public UserResource(User user) {
         this.user = user;
+        if (user.getProfileImage() != null) {
+            String encodeBase64 = Base64.getEncoder().encodeToString(user.getProfileImage().getImageByte());
+            String extention = FilenameUtils.getExtension(user.getProfileImage().getImageName());
+            this.image = "data:image/" + extention + ";base64," + encodeBase64;
+        }
         try {
 //            add(linkTo(methodOn(UserController.class).findUserById(user.getId())).withSelfRel());
 //            add(linkTo(methodOn(UserController.class).updateUser(user, null)).withRel("update"));
@@ -31,6 +40,10 @@ public class UserResource extends RepresentationModel {
 
     public User getUser() {
         return user;
+    }
+
+    public String getImage() {
+        return image;
     }
 
 }

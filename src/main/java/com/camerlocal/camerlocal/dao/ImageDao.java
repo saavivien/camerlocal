@@ -11,6 +11,6 @@ import com.camerlocal.camerlocal.entities.Image;
  *
  * @author vivien saa
  */
-public interface ImageDao extends CoreObjectDao<Image> {
+public interface ImageDao extends GenericDao<Image, Long> {
 
 }

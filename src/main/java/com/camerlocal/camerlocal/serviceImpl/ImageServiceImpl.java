@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 public class ImageServiceImpl
-        extends CoreObjectServiceImpl<Image, ImageDao>
+        extends GenericServiceImpl<Image, Long, ImageDao>
         implements ImageService {
 
     @Autowired

@@ -107,16 +107,14 @@ public class UserServiceImpl
     public User update(Long id, User user, User userEditor) throws CamerLocalServiceException {
         try {
             User u = userDao.findById(id);
-            //copy user's data since we dont want to change the password. The incoming user doen't have that password
-            u.setEmail(user.getEmail());
-            u.setDescription(user.getDescription());
-            u.setEmail(user.getEmail());
+            u.setTitle(user.getTitle());
             u.setFirstName(user.getFirstName());
             u.setName(user.getName());
+            u.setEmail(user.getEmail());
             u.setPhone1(user.getPhone1());
             u.setPhone2(user.getPhone2());
-            u.setTitle(user.getTitle());
             u.setRoles(user.getRoles());
+            u.setProfileImage(user.getProfileImage());
 
             setMetaData(u, userEditor, Action.EDIT);
 

@@ -5,6 +5,7 @@
  */
 package com.camerlocal.camerlocal.controller;
 
+import com.camerlocal.camerlocal.entities.Image;
 import com.camerlocal.camerlocal.entities.User;
 import com.camerlocal.camerlocal.resources.UserResource;
 import com.camerlocal.camerlocal.service.UserService;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,6 +60,9 @@ public class UserController extends CamerLocalRestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ObjectMapper pojoConverter;
+
     @PostMapping(value = "/client")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserResource> createUserClient(@RequestBody User user) throws Exception {
@@ -94,16 +99,21 @@ public class UserController extends CamerLocalRestController {
         }
     }
 
-    @PostMapping(value = {"/userprofile"})
+    @PostMapping(value = "/userprofile")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<UserResource> createUserWithProfile(@RequestParam(value = "user") String user, @RequestParam(value = "image") MultipartFile file) throws JsonProcessingException {
+    public ResponseEntity<UserResource> createUserWithProfile(@RequestParam(value = "user") String user, @RequestParam(value = "image") MultipartFile file) throws JsonProcessingException, IOException {
         try {
-            User userModel = new ObjectMapper().readValue(user, User.class);
-            String profileImageName = ImageUtils.saveImage("path/imageprofile", file);
-            userModel.setProfileImageName(profileImageName);
+            User userModel = pojoConverter.readValue(user, User.class);
             User u = userService.create(userModel, getAuthenticatedUser());
-            final URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(u.getId()).toUri();
-            return ResponseEntity.created(uri).body(new UserResource(u));
+
+            Image image = new Image();
+            image.setCreationDate(new Date());
+            image.setImageName(file.getOriginalFilename());
+            image.setImageByte(file.getBytes());
+            u.setProfileImage(image);
+
+            u = userService.create(u, getAuthenticatedUser());
+            return ResponseEntity.ok(new UserResource(u));
         } catch (CamerLocalServiceException ex) {
             throw new InternalServerException(INTERNAL_SERVER_ERROR_MESSAGE + ex);
         }
@@ -113,9 +123,8 @@ public class UserController extends CamerLocalRestController {
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserResource> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        User u;
         try {
-            u = userService.update(id, user, getAuthenticatedUser());
+            User u = userService.update(id, user, getAuthenticatedUser());
             if (null != u) {
                 final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
                 return ResponseEntity.created(uri).body(new UserResource(u));
@@ -128,19 +137,23 @@ public class UserController extends CamerLocalRestController {
 
     }
 
-    @PutMapping(value = {"/userprofile"})
+    @PutMapping(value = "/userprofile/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<UserResource> updateUserWithProfile(@RequestParam(value = "user") User user, @RequestParam(value = "image") MultipartFile file) {
+    public ResponseEntity<UserResource> updateUserWithProfile(@PathVariable("id") Long id, @RequestParam(value = "user") String user, @RequestParam(value = "image", required = false) MultipartFile file) throws JsonProcessingException, IOException {
         try {
-            String profileImageName = ImageUtils.saveImage("path/imageprofile", file);
-            user.setProfileImageName(profileImageName);
-            User u = userService.create(user, getAuthenticatedUser());
-            final URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(u.getId()).toUri();
-            return ResponseEntity.created(uri).body(new UserResource(u));
+            User userModel = pojoConverter.readValue(user, User.class);
+            if (file != null) {
+                Image image = new Image();
+                image.setCreationDate(new Date());
+                image.setImageName(file.getOriginalFilename());
+                image.setImageByte(file.getBytes());
+                userModel.setProfileImage(image);
+            }
+            User u = userService.update(id, userModel, getAuthenticatedUser());
+            return ResponseEntity.ok(new UserResource(u));
         } catch (CamerLocalServiceException ex) {
             throw new InternalServerException(INTERNAL_SERVER_ERROR_MESSAGE + ex);
         }
-
     }
 
     @GetMapping

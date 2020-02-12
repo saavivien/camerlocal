@@ -12,6 +12,6 @@ import com.camerlocal.camerlocal.entities.Image;
  *
  * @author vivien saa
  */
-public interface ImageService extends CoreObjectService<Image, ImageDao> {
+public interface ImageService extends GenericService<Image, Long, ImageDao> {
 
 }

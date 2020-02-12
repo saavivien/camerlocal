@@ -5,40 +5,68 @@
  */
 package com.camerlocal.camerlocal.entities;
 
+import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author vivien saa
  */
 @Entity
-public class Image extends CoreObject {
+public class Image implements Serializable {
 
-    @Column(name = "image_path")
-    private String imagePath;
+//    @Column(name = "image_path")
+//    private String imagePath;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-    @Column(name = "image_type")
-    private String imageType;
+    @Column(name = "image_name")
+    private String imageName;
+
+    @Column
+    private byte[] imageByte;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Column(name = "creation_date")
+    protected Date creationDate;
 
     @ManyToOne(optional = true)
     private Product product;
 
-    public String getImagePath() {
-        return imagePath;
+    @OneToOne(optional = true)
+    private User user;
+
+    public long getId() {
+        return id;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getImageType() {
-        return imageType;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public byte[] getImageByte() {
+        return imageByte;
+    }
+
+    public void setImageByte(byte[] imageByte) {
+        this.imageByte = imageByte;
     }
 
     public Product getProduct() {
@@ -47,6 +75,22 @@ public class Image extends CoreObject {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
 }
