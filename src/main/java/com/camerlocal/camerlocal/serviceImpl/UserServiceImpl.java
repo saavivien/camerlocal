@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -108,13 +109,18 @@ public class UserServiceImpl
         try {
             User u = userDao.findById(id);
             u.setTitle(user.getTitle());
+
             u.setFirstName(user.getFirstName());
             u.setName(user.getName());
             u.setEmail(user.getEmail());
             u.setPhone1(user.getPhone1());
             u.setPhone2(user.getPhone2());
-            u.setRoles(user.getRoles());
-            u.setProfileImage(user.getProfileImage());
+            if (userEditor.getRoles().stream().map(r -> r.getRoleName()).collect(Collectors.toList()).contains(Constants.ROLE_ADMIN)) {
+                u.setRoles(user.getRoles());
+            }
+            if (null != user.getProfileImage()) {
+                u.setProfileImage(user.getProfileImage());
+            }
 
             setMetaData(u, userEditor, Action.EDIT);
 

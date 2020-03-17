@@ -22,9 +22,10 @@ public class UserResource extends RepresentationModel {
     private User user;
     private String image;
 
-    public UserResource(User user) {
+    public UserResource(User user, Boolean withProfileImage) {
         this.user = user;
-        if (user.getProfileImage() != null) {
+        //do not serve image for every request
+        if (user.getProfileImage() != null && withProfileImage) {
             String encodeBase64 = Base64.getEncoder().encodeToString(user.getProfileImage().getImageByte());
             String extention = FilenameUtils.getExtension(user.getProfileImage().getImageName());
             this.image = "data:image/" + extention + ";base64," + encodeBase64;

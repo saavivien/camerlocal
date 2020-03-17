@@ -35,7 +35,7 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_AGENT')")
     public ResponseEntity<CollectionModel<RoleResource>> findAllRoles() {
         List<RoleResource> listResources = new ArrayList<>();
         try {
