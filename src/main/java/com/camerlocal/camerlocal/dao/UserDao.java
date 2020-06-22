@@ -6,6 +6,8 @@
 package com.camerlocal.camerlocal.dao;
 
 import com.camerlocal.camerlocal.entities.User;
+import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
+import com.camerlocal.camerlocal.exception.CamerLocalException;
 
 /**
  *
@@ -13,5 +15,5 @@ import com.camerlocal.camerlocal.entities.User;
  */
 public interface UserDao extends CoreObjectDao<User> {
 
-    public User findUserByUserName(String userName) throws Exception;
+    public User findUserByUserName(String userName) throws CamerLocalDaoException;
 }

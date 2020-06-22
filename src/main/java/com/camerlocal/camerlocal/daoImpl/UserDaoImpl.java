@@ -20,7 +20,7 @@ public class UserDaoImpl extends CoreObjectDaoImpl<User>
         implements UserDao {
 
     @Override
-    public User findUserByUserName(String userName) throws Exception {
+    public User findUserByUserName(String userName) throws CamerLocalDaoException {
         List results = getEntityManager().createNamedQuery("user_find_user_by_user_name").
                 setParameter("userName", userName).getResultList();
         try {

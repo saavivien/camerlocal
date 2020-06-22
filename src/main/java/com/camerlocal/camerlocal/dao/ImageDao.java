@@ -6,6 +6,7 @@
 package com.camerlocal.camerlocal.dao;
 
 import com.camerlocal.camerlocal.entities.Image;
+import com.camerlocal.camerlocal.exception.CamerLocalDaoException;
 
 /**
  *
@@ -13,4 +14,5 @@ import com.camerlocal.camerlocal.entities.Image;
  */
 public interface ImageDao extends GenericDao<Image, Long> {
 
+    public Image findImageByUser(long userId) throws CamerLocalDaoException;
 }

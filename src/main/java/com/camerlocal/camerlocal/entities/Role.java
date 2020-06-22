@@ -44,7 +44,7 @@ public class Role implements Serializable {
     private String displayedName;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> users;
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

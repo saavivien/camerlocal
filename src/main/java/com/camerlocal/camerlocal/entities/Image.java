@@ -9,10 +9,14 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -21,6 +25,8 @@ import javax.persistence.Temporal;
  * @author vivien saa
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "image_find_image_by_user_id", query = "SELECT im FROM Image im WHERE im.user.id =: userId ")})
 public class Image implements Serializable {
 
 //    @Column(name = "image_path")
@@ -42,7 +48,8 @@ public class Image implements Serializable {
     @ManyToOne(optional = true)
     private Product product;
 
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public long getId() {

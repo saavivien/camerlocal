@@ -53,8 +53,7 @@ public class User extends CoreObject implements UserDetails {
     private String email;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private Image profileImage;
 
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -69,20 +68,20 @@ public class User extends CoreObject implements UserDetails {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 //    private List<UserRole> listUserRoles;
     @JsonIgnore
-    @OneToMany(mappedBy = "userCreator", fetch = FetchType.LAZY)
-    private List<CoreObject> listCoreObjectCreateds;
+    @OneToMany(mappedBy = "userCreator")
+    private List<CoreObject> coreObjectCreateds;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userArchivist", fetch = FetchType.LAZY)
-    private List<CoreObject> listCoreObjectArchiveds;
+    private List<CoreObject> coreObjectArchiveds;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userCommentator", fetch = FetchType.LAZY)
-    private List<Comment> listComments;
+    private List<Comment> comments;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userMarker", fetch = FetchType.LAZY)
-    private List<Mark> listMarks;
+    private List<Mark> marks;
 
     @JsonIgnore
     @OneToMany(mappedBy = "basketOwner", fetch = FetchType.LAZY)
@@ -160,20 +159,20 @@ public class User extends CoreObject implements UserDetails {
         this.roles = roles;
     }
 
-    public List<CoreObject> getListCoreObjectCreateds() {
-        return listCoreObjectCreateds;
+    public List<CoreObject> getCoreObjectCreateds() {
+        return coreObjectCreateds;
     }
 
-    public void setListCoreObjectCreateds(List<CoreObject> listCoreObjectCreateds) {
-        this.listCoreObjectCreateds = listCoreObjectCreateds;
+    public List<CoreObject> getCoreObjectArchiveds() {
+        return coreObjectArchiveds;
     }
 
-    public List<CoreObject> getListCoreObjectArchiveds() {
-        return listCoreObjectArchiveds;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setListCoreObjectArchiveds(List<CoreObject> listCoreObjectArchiveds) {
-        this.listCoreObjectArchiveds = listCoreObjectArchiveds;
+    public List<Mark> getMarks() {
+        return marks;
     }
 
     @Override
@@ -186,20 +185,20 @@ public class User extends CoreObject implements UserDetails {
         this.listCoreObjectEditions = listCoreObjectEditions;
     }
 
-    public List<Comment> getListComments() {
-        return listComments;
+    public void setCoreObjectCreateds(List<CoreObject> coreObjectCreateds) {
+        this.coreObjectCreateds = coreObjectCreateds;
     }
 
-    public void setListComments(List<Comment> listComments) {
-        this.listComments = listComments;
+    public void setCoreObjectArchiveds(List<CoreObject> coreObjectArchiveds) {
+        this.coreObjectArchiveds = coreObjectArchiveds;
     }
 
-    public List<Mark> getListMarks() {
-        return listMarks;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
-    public void setListMarks(List<Mark> listMarks) {
-        this.listMarks = listMarks;
+    public void setMarks(List<Mark> marks) {
+        this.marks = marks;
     }
 
     public List<Basket> getListBaskets() {

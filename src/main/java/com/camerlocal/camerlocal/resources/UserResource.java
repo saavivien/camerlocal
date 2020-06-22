@@ -6,7 +6,6 @@
 package com.camerlocal.camerlocal.resources;
 
 import com.camerlocal.camerlocal.entities.User;
-import java.io.FileInputStream;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,10 +21,10 @@ public class UserResource extends RepresentationModel {
     private User user;
     private String image;
 
-    public UserResource(User user, Boolean withProfileImage) {
+    public UserResource(User user) {
         this.user = user;
         //do not serve image for every request
-        if (user.getProfileImage() != null && withProfileImage) {
+        if (null != user.getProfileImage()) {
             String encodeBase64 = Base64.getEncoder().encodeToString(user.getProfileImage().getImageByte());
             String extention = FilenameUtils.getExtension(user.getProfileImage().getImageName());
             this.image = "data:image/" + extention + ";base64," + encodeBase64;
